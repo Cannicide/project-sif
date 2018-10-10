@@ -8,13 +8,13 @@
   "restart": {
     "exclude": [
       "^public/",
-      "^dist/",
-      "^server.js$"
+      "^dist/"
     ],
     "include": [
       "\\.js$",
-      "\\.json"
+      "\\.json",
+      "^server\\.js$"
     ]
   },
-  "throttle": 900000
+  "throttle": 30000
 }
