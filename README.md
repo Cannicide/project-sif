@@ -1,27 +1,52 @@
-Welcome to Glitch
+Project Sif
 =================
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+An entirely open source discord bot for your entertainment and moderation purposes.
 
-**Glitch** is the friendly community where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
+**Project Sif** is edited every week, with at least one to two commands added in that time.
+I test all of my commands thoroughly before uploading them to the main bot itself. The
+bot is hosted on a public server, and is open to the public. Anyone can view my code and
+suggest edits, report bugs, or suggest additional commands on the Github page.
 
-Find out more [about Glitch](https://glitch.com/about).
+Created by [Cannicide](https://cannicide.weebly.com/).
 
 
-Your Project
+Commands List
 ------------
 
-On the front-end,
-- edit `public/client.js`, `public/style.css` and `views/index.html`
-- drag in `assets`, like images or music, to add them to your project
+Commands are added and edited frequently. The default prefix is ?.
+Format of commands list:\
+`?command [option] [another option] [{optional option}]` - Description of command
 
-On the back-end,
-- your app starts at `server.js`
-- add frameworks and packages in `package.json`
-- safely store app secrets in `.env` (nobody can see this but you and people you invite)
+***Entertainment***
+
+`?coins [{user}]` - Checks your, or a specified user's, dollar balance\
+`?meme` - Fetches a dank meme from reddit at the cost of 5 dollars (fake currency)\
+`?roulette [bet] [color]` - Gets you money based on your bet and color (black/red/green)\
+`?multiplier [add/view]` - Views or adds to your multiplier
+
+***Functionality***
+
+`?sif:core prefix [prefix]` - Changes prefix for a guild\
+`?help` - Gives commands list and descriptions\
+`?sifhelp` - Alias for help, prefix for this does not change\
+`?info` - Gives info about the bot
+
+***Moderation***
+
+-No moderation commands exist for public use yet.
+
+***Bot Functions Explained***
+
+\-The bot gives you 0.25 "dollars" per message by default, your balance can be checked with `?coins`\
+\-Multipliers can be bought with `?multiplier add`. Each multiplier costs 1000 times your current multiplier level, and each purchase doubles your multiplier.\
+\-Buying multipliers can increase your dollars per message exponentially... my multiplier
+is currently x36028797018963970, and I have 1486187877032263700 dollars. The more you upgrade
+your multiplier, the harder it gets to upgrade again. However, I now have much more than what I need
+to buy as many memes as I want, and to play as many rounds of roulette as I need :D\
+\-Using the roulette, meme, and multiplier commands wisely will get you a lot of dollars.
+
+*Based off of my original discord bot, Project Maria.*
 
 
-Made by [Glitch](https://glitch.com/)
--------------------
 
-\ ゜o゜)ノ
