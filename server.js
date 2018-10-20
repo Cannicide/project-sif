@@ -54,11 +54,38 @@ client.on('message', message => {
 else {
   localStorage.setItem(message.author.id, 0); 
 }
+  if (localStorage.getItem("guildpoints")) {
+}
+else {
+  localStorage.setItem("guildpoints", ""); 
+}
   if (localStorage.getItem(message.author.tag) > 1) {
 }
 else {
   localStorage.setItem(message.author.tag, 1); 
 }
+  var ismember = false;
+  localStorage.getItem("guildpoints").split(":sif:").forEach(function(item, index) {
+      if (item.match(message.author.id)) {
+            ismember = true;
+          }
+  });
+  if (ismember) {
+      var points = "";
+        localStorage.getItem("guildpoints").split(":sif:").forEach(function(item, index) {
+          if (item.match(message.author.id)) {
+                var num = Number(item.split(":score:")[1]) + 1;
+                points = points + ":sif:" + message.author.id + ":score:" + num;
+              }
+          else if (item) {
+             points = points + ":sif:" + item; 
+          }
+        });
+      localStorage.setItem("guildpoints", points);
+      }
+  else {
+     localStorage.setItem("guildpoints", (localStorage.getItem("guildpoints") + ":sif:" + message.author.id + ":score:" + 0)); 
+  }
   if (localStorage.getItem(message.guild)) {
     if (localStorage.getItem(message.guild).length > 1) {
         localStorage.setItem(message.guild, "?");
@@ -74,7 +101,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
         message.channel.startTyping();
         setTimeout(function() {
         if (message.content == prefix + "help" || message.content == "?sifhelp") {
-            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Temporarily only works for Cannicide)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random meme from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\`\`\``);
+            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Temporarily only works for Cannicide)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random meme from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\n${prefix}points [{optional user ID}] - Views your guild rank and guild points, which are earned through sending messages in any guild.\n${prefix}ls [item to get] [{optional item to set}] - Gets or sets localstorage values (Can only be used by bot creators and editors.)\`\`\``);
         }
         if (message.content == prefix + "coins") {
             var cvalue = Math.round(localStorage.getItem(message.author.id));
@@ -115,7 +142,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
            message.channel.send("`Info on Project Sif`\n\nAt least one to two commands are added to this bot per week.\nProject Sif was created by Cannicide#2753.\nIt is built and run on a server, so the bot will never go offline unless the server itself does.\nTo report bugs, DM Cannicide or submit an issue on Github.\nFor a commands list, do " + prefix + "help"); 
         }
         if (message.content == prefix + "roulette") {
-            message.channel.send("`How to Use Roulette`\n\nUsage: `" + prefix + "roulette <bet> <color>`\nExample: `" + prefix + "roulette 25 green`\nDescription: A game with a big wheel, in which a ball is rolled. The wheel contains many pockets, each one colored Green, Black, or Red. Your job is to guess the color on which the ball will stop rolling. Guessing black or red correctly gives you double what you bet, and guessing green correctly gives you 100 times what you bet. Bets use your dollar balance, which can be checked with `" + prefix + "coins`");
+            message.channel.send("`How to Use Roulette`\n\nUsage: `" + prefix + "roulette <bet> <color>`\nExample: `" + prefix + "roulette 25 green`\nDescription: A game with a big wheel, in which a ball is rolled. The wheel contains many pockets, each one colored Green, Black, or Red. Your job is to guess the color on which the ball will stop rolling. Guessing black or red correctly gives you double what you bet, and guessing green correctly gives you 12 times what you bet. Bets use your dollar balance, which can be checked with `" + prefix + "coins`");
         }
         else if (message.content.startsWith(prefix + "roulette")) {
             var bet = message.content.split(" ")[1];
@@ -127,13 +154,13 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
               var truecolornum = Math.floor(Math.random() * 40);
               var truecolorarray = ["GREEN", "BLACK", "RED"];
               var truecolor;
-              if (truecolornum > 0 && truecolornum < 10) {
+              if (truecolornum > 0 && truecolornum <= 5) {
                   truecolor = truecolorarray[0];
               }
-              else if (truecolornum > 9 && truecolornum < 22) {
+              else if (truecolornum > 5 && truecolornum <= 22) {
                   truecolor = truecolorarray[1];
               }
-              else if (truecolornum > 1 && truecolornum > 21) {
+              else if (truecolornum > 22 && truecolornum <= 39) {
                   truecolor = truecolorarray[2];
               }
               if (truecolor == color.toUpperCase()) {
@@ -168,6 +195,88 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
             message.reply("you do not have enough dollars to do that. Amount required: " + (1000 * Number(localStorage.getItem(message.author.tag))) + "."); 
           }
         }
+        if (message.content.startsWith(prefix + "points")) {
+            var pointid = message.author.id;
+            var intropoint = "you have ";
+            var isitmem = false;
+            if (message.content.split(" ").length > 1 && message.content.split(" ")[1].length == 18) {
+              pointid = message.content.split(" ")[1];
+              intropoint = `<@${pointid}>` + " has ";
+            }
+            localStorage.getItem("guildpoints").split(":sif:").forEach(function(item, index) {
+              if (item.match(pointid)) {
+                var score = Number(item.split(":score:")[1]);
+                var guildrank = "Newbie";
+                isitmem = true;
+                if (score >= 25) {
+                    guildrank = "Trainee";
+                }
+                else if (score >= 100) {
+                   guildrank = "Lame Memer"; 
+                }
+                else if (score >= 1000) {
+                   guildrank = "Dank Memer"; 
+                }
+                else if (score >= 2500) {
+                   guildrank = "Anime Addict"; 
+                }
+                else if (score >= 5000) {
+                   guildrank = "Dead Memer"; 
+                }
+                else if (score >= 7500) {
+                   guildrank = "Has No Life"; 
+                }
+                else if (score >= 9000) {
+                   guildrank = "Active User"; 
+                }
+                else if (score >= 10000) {
+                   guildrank = "Legendary Being"; 
+                }
+                else if (score >= 25000) {
+                   guildrank = "Literally Figurative"; 
+                }
+                else if (score >= 50000) {
+                   guildrank = "Spontaneous Memer"; 
+                }
+                else if (score >= 100000) {
+                   guildrank = "Time-Wasting No-Lifer"; 
+                }
+                else if (score >= 500000) {
+                   guildrank = "Nugtier Thing"; 
+                }
+                else if (score >= 1000000) {
+                   guildrank = "God"; 
+                }
+                else if (score >= 5000000) {
+                   guildrank = "Outright Spammer"; 
+                }
+                else if (score >= 10000000) {
+                   guildrank = "Depression-Level Active Discord User"; 
+                }
+                else if (score >= 1000000000) {
+                   guildrank = "Does Not Compute"; 
+                }
+                else if (score >= 5000000000) {
+                   guildrank = "Cannicidetier Thing"; 
+                }
+                else if (score >= 1000000000000) {
+                   guildrank = "Quadrillionaire"; 
+                }
+                else if (score >= 1000000000000000) {
+                   guildrank = "Delete Your Discord Right Now"; 
+                }
+                message.channel.send(intropoint + score + " guild points. Guild rank: " + guildrank + ".");    
+              }
+            });
+          if (!isitmem) {
+                message.channel.send(`<@${pointid}> has not sent any messages in a guild with me in it, and thus does not have any guild points 😦`);
+              }
+        }
+        if (message.content.match(prefix + "ls") && message.author.tag == "Cannicide#2753") {
+          if (message.content.split(" ").length <= 2) message.reply(localStorage.getItem(message.content.split(" ")[1]));
+          else {localStorage.setItem(message.content.split(" ")[1], message.content.split(" ")[2]); message.reply("Set " + message.content.split(" ")[1] + " to " + message.content.split(" ")[2]);}
+        }
+        
         message.channel.stopTyping();
         }, 1000);
     }
