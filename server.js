@@ -5,7 +5,7 @@
 var express = require('express');
 var app = express();
 
-// we've started you off with Express, 
+// we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
 // http://expressjs.com/en/starter/static-files.html
@@ -25,7 +25,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require('node-localstorage').LocalStorage;
   localStorage = new LocalStorage('./ls.txt');
 }
- 
+
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -48,16 +48,16 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-  
+
   if (localStorage.getItem(message.author.id) > 0) {
 }
 else {
-  localStorage.setItem(message.author.id, 0); 
+  localStorage.setItem(message.author.id, 0);
 }
   if (localStorage.getItem(message.author.tag) > 1) {
 }
 else {
-  localStorage.setItem(message.author.tag, 1); 
+  localStorage.setItem(message.author.tag, 1);
 }
   if (localStorage.getItem(message.guild)) {
     if (localStorage.getItem(message.guild).length > 1) {
@@ -66,10 +66,10 @@ else {
         }
       prefix = localStorage.getItem(message.guild);
       }
- 
+
   var coins = Number(localStorage.getItem(message.author.id)) + (1/4 * Number(localStorage.getItem(message.author.tag)));
   localStorage.setItem(message.author.id, coins);
-  
+
 if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")) {
         message.channel.startTyping();
         setTimeout(function() {
@@ -108,11 +108,11 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
           message.reply("each meme costs 5 dollars... check your dollar balance with: " + prefix + "coins");
           }
           else {
-          message.reply("the meme command retrieves memes from Reddit, which may contain NSFW ideas (but not NSFW images)... for that reason, you can only use this command in an NSFW channel."); 
+          message.reply("the meme command retrieves memes from Reddit, which may contain NSFW ideas (but not NSFW images)... for that reason, you can only use this command in an NSFW channel.");
           }
         }
         if (message.content == prefix + "info") {
-           message.channel.send("`Info on Project Sif`\n\nAt least one to two commands are added to this bot per week.\nProject Sif was created by Cannicide#2753.\nIt is built and run on a server, so the bot will never go offline unless the server itself does.\nTo report bugs, DM Cannicide or submit an issue on Github.\nFor a commands list, do " + prefix + "help"); 
+           message.channel.send("`Info on Project Sif`\n\nAt least one to two commands are added to this bot per week.\nProject Sif was created by Cannicide#2753.\nIt is built and run on a server, so the bot will never go offline unless the server itself does.\nTo report bugs, DM Cannicide or submit an issue on Github.\nFor a commands list, do " + prefix + "help");
         }
         if (message.content == prefix + "roulette") {
             message.channel.send("`How to Use Roulette`\n\nUsage: `" + prefix + "roulette <bet> <color>`\nExample: `" + prefix + "roulette 25 green`\nDescription: A game with a big wheel, in which a ball is rolled. The wheel contains many pockets, each one colored Green, Black, or Red. Your job is to guess the color on which the ball will stop rolling. Guessing black or red correctly gives you double what you bet, and guessing green correctly gives you 100 times what you bet. Bets use your dollar balance, which can be checked with `" + prefix + "coins`");
@@ -156,7 +156,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
           message.channel.send("`How to Use Multiplier`\n\nUsage: `" + prefix + "multiplier <add/view>`\nExample: `" + prefix + "multiplier add`\nDescription: Buy a multiplier to earn more dollars per message (add), or view your current multiplier (view). Each multiplier costs 1000 times the current multiplier level. Default multiplier level is 1. Each purchase now doubles your multiplier, for faster grinding.");
         }
         else if (message.content == prefix + "multiplier view") {
-          message.channel.send(`Current multiplier: x${localStorage.getItem(message.author.tag)}`);  
+          message.channel.send(`Current multiplier: x${localStorage.getItem(message.author.tag)}`);
         }
         else if (message.content.startsWith(prefix + "multiplier")) {
           if (localStorage.getItem(message.author.id) >= (1000 * Number(localStorage.getItem(message.author.tag)))) {
@@ -165,9 +165,40 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
             message.reply("Purchase successful! You now have a multiplier of x" + localStorage.getItem(message.author.tag) + " dollars!");
           }
           else {
-            message.reply("you do not have enough dollars to do that. Amount required: " + (1000 * Number(localStorage.getItem(message.author.tag))) + "."); 
+            message.reply("you do not have enough dollars to do that. Amount required: " + (1000 * Number(localStorage.getItem(message.author.tag))) + ".");
           }
         }
+
+        //this portion was/is made by the nug
+        if (message.content == prefix + "chess help") {
+          message.channel.send("Use ?chess <@someone> to challenge someone to a game");
+          message.channel.send("The board is laid out in coordinates. It goes ``` |A|B|C|D|E|F|G|H\n1\n2\n3\n4\n5\n6\n7\n8");
+        }
+        if (message.content.startsWith(prefix + "coins")) {
+          var challenged = message.mentions.members.first().user.id;
+          var challenger = message.author.user.id;
+          message.channel.send(mmberinquestion + "has been challeneged by" + message.author.user.id + "to a game of chess, ***TO THE DEATH***");
+          message.channel.send("Here is your board: ``` \n R|K|B|Q|K|B|K|R\n---------------\nP|P|P|P|P|P|P|P\n---------------\n | | | | | | |\n---------------\n | | | | | | |\n---------------\n | | | | | | |\n---------------\n | | | | | | |\n---------------\nP|P|P|P|P|P|P|P\n---------------\nR|K|B|Q|K|B|K|R");
+          message.channel.send("May the challenged party pick heads or tails")
+          if (message.content == ("heads") && (Math.floor(Math.random() * 2)==1)) {
+            message.channel.send("The Challenged party gets the white side")
+            message.channel.send("You may start playing");
+            if () {
+            }
+          }
+          if (message.content == ("tails") && (Math.floor(Math.random() * 2)==0)) {
+            message.channel.send("The Challenged party gets the white side")
+            message.channel.send("You may start playing");
+            if () {
+            }
+          }
+        }
+        if (message.content.startsWith(prefix + "senpai")) {.
+          
+          message.channel.sendFile("senpei.png");
+        }
+        //nug section has ended, mepis bepis alfredo fetticine lettuce
+
         message.channel.stopTyping();
         }, 1000);
     }
@@ -175,4 +206,4 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
 
 
 
-client.login(process.env.TOKEN);  
+client.login(process.env.TOKEN);
