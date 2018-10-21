@@ -24,6 +24,7 @@ Format of commands list:\
 `?meme` - Fetches a dank meme from reddit at the cost of 5 dollars (fake currency)\
 `?roulette [bet] [color]` - Gets you money based on your bet and color (black/red/green)\
 `?multiplier [add/view]` - Views or adds to your multiplier
+`?chess [{user}]` - Challenge someone to an epic duel
 
 ***Functionality***
 
@@ -47,6 +48,3 @@ to buy as many memes as I want, and to play as many rounds of roulette as I need
 \-Using the roulette, meme, and multiplier commands wisely will get you a lot of dollars.
 
 *Based off of my original discord bot, Project Maria.*
-
-
-
