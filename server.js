@@ -211,58 +211,58 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 if (score >= 25) {
                     guildrank = "Trainee";
                 }
-                else if (score >= 100) {
+                if (score >= 100) {
                    guildrank = "Lame Memer"; 
                 }
-                else if (score >= 1000) {
+                if (score >= 1000) {
                    guildrank = "Dank Memer"; 
                 }
-                else if (score >= 2500) {
+                if (score >= 2500) {
                    guildrank = "Anime Addict"; 
                 }
-                else if (score >= 5000) {
+                if (score >= 5000) {
                    guildrank = "Dead Memer"; 
                 }
-                else if (score >= 7500) {
+                if (score >= 7500) {
                    guildrank = "Has No Life"; 
                 }
-                else if (score >= 9000) {
+                if (score >= 9000) {
                    guildrank = "Active User"; 
                 }
-                else if (score >= 10000) {
+                if (score >= 10000) {
                    guildrank = "Legendary Being"; 
                 }
-                else if (score >= 25000) {
+                if (score >= 25000) {
                    guildrank = "Literally Figurative"; 
                 }
-                else if (score >= 50000) {
+                if (score >= 50000) {
                    guildrank = "Spontaneous Memer"; 
                 }
-                else if (score >= 100000) {
+                if (score >= 100000) {
                    guildrank = "Time-Wasting No-Lifer"; 
                 }
-                else if (score >= 500000) {
+                if (score >= 500000) {
                    guildrank = "Nugtier Thing"; 
                 }
-                else if (score >= 1000000) {
+                if (score >= 1000000) {
                    guildrank = "God"; 
                 }
-                else if (score >= 5000000) {
+                if (score >= 5000000) {
                    guildrank = "Outright Spammer"; 
                 }
-                else if (score >= 10000000) {
+                if (score >= 10000000) {
                    guildrank = "Depression-Level Active Discord User"; 
                 }
-                else if (score >= 1000000000) {
+                if (score >= 1000000000) {
                    guildrank = "Does Not Compute"; 
                 }
-                else if (score >= 5000000000) {
+                if (score >= 5000000000) {
                    guildrank = "Cannicidetier Thing"; 
                 }
-                else if (score >= 1000000000000) {
+                if (score >= 1000000000000) {
                    guildrank = "Quadrillionaire"; 
                 }
-                else if (score >= 1000000000000000) {
+                if (score >= 1000000000000000) {
                    guildrank = "Delete Your Discord Right Now"; 
                 }
                 message.channel.send(intropoint + score + " guild points. Guild rank: " + guildrank + ".");    
@@ -272,7 +272,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 message.channel.send(`<@${pointid}> has not sent any messages in a guild with me in it, and thus does not have any guild points 😦`);
               }
         }
-        if (message.content.match(prefix + "ls") && message.author.tag == "Cannicide#2753") {
+        if (message.content.startsWith(prefix + "ls") && message.author.tag == "Cannicide#2753") {
           if (message.content.split(" ").length <= 2) message.reply(localStorage.getItem(message.content.split(" ")[1]));
           else {localStorage.setItem(message.content.split(" ")[1], message.content.split(" ")[2]); message.reply("Set " + message.content.split(" ")[1] + " to " + message.content.split(" ")[2]);}
         }
