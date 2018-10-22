@@ -101,7 +101,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
         message.channel.startTyping();
         setTimeout(function() {
         if (message.content == prefix + "help" || message.content == "?sifhelp") {
-            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Temporarily only works for Cannicide)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random meme from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\n${prefix}points [{optional user ID}] - Views your guild rank and guild points, which are earned through sending messages in any guild.\n${prefix}ls [item to get] [{optional item to set}] - Gets or sets localstorage values (Can only be used by bot creators and editors.)\`\`\``);
+            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Temporarily only works for Cannicide)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random meme from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\n${prefix}points [{optional user ID}] - Views your guild rank and guild points, which are earned through sending messages in any guild.\n${prefix}ls [item to get] [{optional item to set}] - Gets or sets localstorage values (Can only be used by bot creators and editors.)\n${prefix}hm [start/guess/end/help] [{letter}] - Hangman! What better description can I provide? HANGMAN!\`\`\``);
         }
         if (message.content == prefix + "coins") {
             var cvalue = Math.round(localStorage.getItem(message.author.id));
@@ -214,6 +214,15 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 if (score >= 100) {
                    guildrank = "Lame Memer"; 
                 }
+                if (score >= 500) {
+                   guildrank = "Almighty Cheese"; 
+                }
+                if (score >= 800) {
+                   guildrank = "Chicken Nugget"; 
+                }
+                if (score >= 900) {
+                   guildrank = "5% Waluigi"; 
+                }
                 if (score >= 1000) {
                    guildrank = "Dank Memer"; 
                 }
@@ -275,6 +284,102 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
         if (message.content.startsWith(prefix + "ls") && message.author.tag == "Cannicide#2753") {
           if (message.content.split(" ").length <= 2) message.reply(localStorage.getItem(message.content.split(" ")[1]));
           else {localStorage.setItem(message.content.split(" ")[1], message.content.split(" ")[2]); message.reply("Set " + message.content.split(" ")[1] + " to " + message.content.split(" ")[2]);}
+        }
+        if (message.content.startsWith(prefix + "hm help") || message.content == prefix + "hm") {
+            message.channel.send("`How to Use Hangman`\n\nUsage: `" + prefix + "hm <start/guess> [{letter}]`\nExample: `" + prefix + "hm guess d`\nDescription: Starts a game of hangman (start), or guesses a letter in a started game (guess). Hangman, yay!");
+        }
+        else if (message.content == prefix + "hm start") {
+            if (localStorage.getItem("\<hm)" + message.author.id)) {
+                message.reply("you have already started a game of hangman! Type `" + prefix + "hm end` to end the game early.");
+            }
+            else {
+                localStorage.setItem("\<hm)" + message.author.id, true);
+                var words = ["Weather", "Incredibility", "Ponderous", "Fastidious", "Ominous", "Capricious", "Pervasive", "Aloof", "Disseminate", "Pugnacious", "Whimsical", "Unfathomable", "Predilection", "Insurgency", "Inadequate", "Immeasurable", "Terracotta", "Significance", "Immobility", "Versatility", "Carcinogen", "Death", "Hanged", "Eejit"];
+                var wordnum = Math.floor(Math.random() * words.length);
+                var word = words[wordnum];
+                var underscores = "";
+                for (var i = 0; i < word.length; i++) {
+                  underscores = underscores + "⬜ ";
+                }
+                localStorage.setItem("\<progress)" + message.author.id, underscores);
+                localStorage.setItem("\<word)" + message.author.id, word);
+                localStorage.setItem("\<guesses)" + message.author.id, 12);
+                message.reply("you have begun a game of hangman! Use `" + prefix + "hm guess` to begin guessing!\n\n" + underscores);
+            }
+        }
+        else if (message.content == prefix + "hm end") {
+            if (localStorage.getItem("\<hm)" + message.author.id)) {
+                localStorage.setItem("\<progress)" + message.author.id, "");
+                localStorage.setItem("\<word)" + message.author.id, "");
+                localStorage.setItem("\<hm)" + message.author.id, "");
+                localStorage.setItem("\<guesses)" + message.author.id, 12);
+                message.reply("ended game!");
+            }
+            else {
+                message.reply("you do not have any running games to end.");  
+            }
+        }
+        else if (message.content == prefix + "hm guess") {
+            if (localStorage.getItem("\<hm)" + message.author.id)) {
+                message.reply("guess a letter with `" + prefix + "hm guess [letter]`, as demonstrated in `" + prefix + "hm help`");
+            }
+            else {
+                message.reply("you have not started a game of hangman yet... use `" + prefix + "hm start` to start a game!");  
+            }
+        }
+        else if (message.content.startsWith(prefix + "hm guess ")) {
+            if (localStorage.getItem("\<hm)" + message.author.id)) {
+                var guess = message.content.split(" ")[2];
+                var limit = localStorage.getItem("\<guesses)" + message.author.id);
+                var word = localStorage.getItem("\<word)" + message.author.id);
+                var underscores = [];
+                var gotLetter = false;
+                if (Number(limit) <= 0) {
+                    localStorage.setItem("\<progress)" + message.author.id, "");
+                    localStorage.setItem("\<word)" + message.author.id, "");
+                    localStorage.setItem("\<hm)" + message.author.id, "");
+                    localStorage.setItem("\<guesses)" + message.author.id, 12);
+                    message.reply("sorry, you are out of guesses. **Game over!**");
+                }
+                else {
+                for (var i = 0; i < word.length; i++) {
+                  underscores.push("⬜");
+                }
+                for (var i = 0; i < word.length; i++) {
+                    if (guess.toUpperCase() == word[i].toUpperCase()) {
+                        gotLetter = true;
+                        underscores[i] = word[i];
+                        localStorage.setItem("\<progress)" + message.author.id, localStorage.getItem("\<progress)" + message.author.id) + word[i]);
+                    }
+                    else {
+                     localStorage.getItem("\<progress)" + message.author.id).split("").forEach(function(item, index) {
+                          if (item == word[i]) {
+                              underscores[i] = item;
+                          }
+                        }); 
+                    }
+                }
+                message.channel.send("**Hangman Progress**\n\n" + underscores.join(" "));
+                if (gotLetter) {
+                    if (underscores.indexOf("⬜") < 0) {
+                        message.reply("you win! **+10000 dollars to you!**");
+                        localStorage.setItem(localStorage.getItem(message.author.id), Number(localStorage.getItem(message.author.id)) + 10000);
+                        localStorage.setItem("\<progress)" + message.author.id, "");
+                        localStorage.setItem("\<word)" + message.author.id, "");
+                        localStorage.setItem("\<hm)" + message.author.id, "");
+                        localStorage.setItem("\<guesses)" + message.author.id, 12);
+                    }
+                }
+                else {
+                    limit = Number(limit) - 1
+                    localStorage.setItem("\<guesses)" + message.author.id, limit);
+                    message.reply("incorrect guess... " + limit + " guesses left.");
+                }
+                }
+            }
+            else {
+                message.reply("you must start a game before guessing the word! Check out `" + prefix + "hm help`");  
+            }
         }
         
         message.channel.stopTyping();
