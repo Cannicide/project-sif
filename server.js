@@ -266,7 +266,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                    guildrank="Venus II";
                    }
                 if(score>=2400){
-                   guildrank="Mercury VI Venus III";
+                   guildrank="Venus III";
                    }
                 if (score >= 2500) {
                    guildrank = "Anime Addict"; 
