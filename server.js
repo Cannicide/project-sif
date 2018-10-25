@@ -426,7 +426,10 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
         }
           if (message.content.startsWith(prefix + "senpai")) {
           
-          message.channel.sendFile("senpei.png");
+          message.channel.send({files: [{
+            attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
+            name: "senpei.PNG"
+          }]});
         }
         
         message.channel.stopTyping();
