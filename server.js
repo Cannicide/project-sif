@@ -424,6 +424,10 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 message.reply("you must start a game before guessing the word! Check out `" + prefix + "hm help`");  
             }
         }
+          if (message.content.startsWith(prefix + "senpai")) {
+          
+          message.channel.sendFile("senpei.png");
+        }
         
         message.channel.stopTyping();
         }, 1000);
