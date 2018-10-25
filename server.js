@@ -226,6 +226,48 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 if (score >= 1000) {
                    guildrank = "Dank Memer"; 
                 }
+                if(score>=1100){
+                   guildrank="Calcoholic I";
+                   }
+                if(score>=1200){
+                   guildrank="Calcoholic II";
+                   }
+                if(score>=1300){
+                   guildrank="Calcoholic III";
+                   }
+                if(score>=1400){
+                   guildrank="Calcolator I";
+                   }
+                if(score>=1500){
+                   guildrank="Calcolator II";
+                   }
+                if(score>=1600){
+                   guildrank="Calcolator III";
+                   }
+                if(score>=1700){
+                   guildrank="Mercury I";
+                   }
+                if(score>=1800){
+                   guildrank="Mercury II";
+                   }
+                if(score>=1900){
+                   guildrank="Mercury III";
+                   }
+                if(score>=2000){
+                   guildrank="Mercury IV";
+                   }
+                if(score>=2100){
+                   guildrank="Mercury V";
+                   }
+                if(score>=2200){
+                   guildrank="Venus I";
+                   }
+                if(score>=2300){
+                   guildrank="Venus II";
+                   }
+                if(score>=2400){
+                   guildrank="Venus III";
+                   }
                 if (score >= 2500) {
                    guildrank = "Anime Addict"; 
                 }
