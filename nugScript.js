@@ -2,6 +2,15 @@
 everything easier and I don't need to copy and paste old code
 into server.js over and over agian with the fear of data loss*/
 
-export class nugScript {
+export public class nugScript {
 
+  senpei() {
+    message.channel.send({files: [{
+      attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
+      name: "senpei.PNG"
+    }]})
+  }
+  chess(challenger, challenged) {
+
+  }
 }

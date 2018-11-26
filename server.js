@@ -426,12 +426,13 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 message.reply("you must start a game before guessing the word! Check out `" + prefix + "hm help`");
             }
         }
-          if (message.content.startsWith(prefix + "senpai")) {
-
-          message.channel.send({files: [{
-            attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
-            name: "senpei.PNG"
-          }]});
+        if (message.content.startsWith(prefix + "senpai")) {
+          nugScript.senpei();
+        }
+        if (message.content.startsWith(prefix + "chess")) {
+          var challenger = message.author.id;
+          var challenged = message.content.substring(7);
+          nugScript.chess(challenger, challenged);
         }
 
         message.channel.stopTyping();
