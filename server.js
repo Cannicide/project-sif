@@ -427,7 +427,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
             }
         }
         if (message.content.startsWith(prefix + "senpai")) {
-          nugScript.senpei();
+          nugScript.senpai();
         }
         if (message.content.startsWith(prefix + "chess")) {
           var challenger = message.author.id;

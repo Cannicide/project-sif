@@ -4,7 +4,7 @@ into server.js over and over agian with the fear of data loss*/
 
 export public class nugScript {
 
-  senpei() {
+  senpai() {
     message.channel.send({files: [{
       attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
       name: "senpei.PNG"
