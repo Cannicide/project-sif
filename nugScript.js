@@ -11,6 +11,6 @@ export public class nugScript {
     }]})
   }
   chess(challenger, challenged) {
-
+    message.channel.send("feature not ready yet, go bother nug, very big sad");
   }
 }
