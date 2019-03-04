@@ -1,41 +1,32 @@
-  // server.js
-// where your node app starts
+// server.js
+// where the node app starts
 
 // init project
 var express = require('express');
 var app = express();
 
-// we've started you off with Express,
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
-
-// http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
-
-// http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function(request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
-
-// listen for requests :)
-var listener = app.listen(process.env.PORT, function() {
+const listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require('node-localstorage').LocalStorage;
   localStorage = new LocalStorage('./ls.txt');
+  var ls = require("./sif-casino/ls"); //ls file from Sif Casino module
 }
-
-
+ 
+//Discord.js initialized
 const Discord = require('discord.js');
 const client = new Discord.Client();
-
-import * as nugScript from 'nugScript.js';
 
 var prefix = "?";
 var memes = require('dankmemes');
 var memelist = 0;
-memes("week", 50, function(err, data) {
+memes("week", 100, function(err, data) {
   memelist = data;
 });
 
@@ -50,62 +41,88 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
+  try {
 
-  if (localStorage.getItem(message.author.id) > 0) {
-}
-else {
-  localStorage.setItem(message.author.id, 0);
-}
-  if (localStorage.getItem("guildpoints")) {
-}
-else {
-  localStorage.setItem("guildpoints", "");
-}
-  if (localStorage.getItem(message.author.tag) > 1) {
-}
-else {
-  localStorage.setItem(message.author.tag, 1);
-}
-  var ismember = false;
-  localStorage.getItem("guildpoints").split(":sif:").forEach(function(item, index) {
-      if (item.match(message.author.id)) {
-            ismember = true;
-          }
-  });
-  if (ismember) {
-      var points = "";
-        localStorage.getItem("guildpoints").split(":sif:").forEach(function(item, index) {
-          if (item.match(message.author.id)) {
-                var num = Number(item.split(":score:")[1]) + 1;
-                points = points + ":sif:" + message.author.id + ":score:" + num;
-              }
-          else if (item) {
-             points = points + ":sif:" + item;
-          }
-        });
-      localStorage.setItem("guildpoints", points);
-      }
-  else {
-     localStorage.setItem("guildpoints", (localStorage.getItem("guildpoints") + ":sif:" + message.author.id + ":score:" + 0));
-  }
-  if (localStorage.getItem(message.guild)) {
-    if (localStorage.getItem(message.guild).length > 1) {
-        localStorage.setItem(message.guild, "?");
-        message.channel.send("Reset guild's prefix to ? due to incompatible prefix.");
+    //Guild ranking points:
+    var points = 0;
+    var memberindex = 0;
+    var ismember = false;
+    if (ls.exist("guildpoints")) {
+      //Guild ranking system already set up
+      ls.getObj("guildpoints").forEach(function(item, index) {
+        if (item[0] == message.author.id) {
+          ismember = true;
+          memberindex = index;
         }
-      prefix = localStorage.getItem(message.guild);
+      });
+      if (ismember) {
+        //Member already has a guild rank
+        var guildpoints = ls.getObj("guildpoints");
+        guildpoints[memberindex][1] += 1;
+        points = guildpoints[memberindex][1];
+        ls.setObj("guildpoints", guildpoints);
       }
+      else {
+        //Member does not already have a guild rank
+        var guildpoints = ls.getObj("guildpoints");
+        guildpoints.push([message.author.id, 0]);
+        points = 0;
+        ls.setObj("guildpoints", guildpoints);
+      }
+    }
+    else {
+      //Guild rankng system not set up
+      ls.setObj("guildpoints", []);
+    }
 
-  var coins = Number(localStorage.getItem(message.author.id)) + (1/4 * Number(localStorage.getItem(message.author.tag)));
-  localStorage.setItem(message.author.id, coins);
+    //Guild prefix:
+    if (ls.exist(message.guild.id + "prefix")) {
+      if (ls.get(message.guild.id + "prefix").length > 1) {
+        ls.set(message.guild.id + "prefix", "?");
+        message.channel.send("Reset guild's prefix to ? due to incompatible prefix.");
+      }
+      prefix = ls.get(message.guild.id + "prefix");
+    }
 
+    //Set message author's ID to convenient ID variable:
+    var id = message.author.id;
+
+    //Member multiplier amount:
+    var multiplier = 1;
+    if (!(ls.get(id + "mult") > 1) || !ls.exist(id + "mult")) {
+      ls.set(id + "mult", 0);
+    }
+    multiplier = ls.get(id + "mult");
+
+    //Member coin amount, adding 1/4 of multiplier:
+    var coins = 0;
+    if (!ls.exist(id + "coins") || !(ls.get(id + "coins") > 0)) {
+      ls.set(id + "coins", 0);
+    }
+    coins = ls.get(id + "coins");
+    coins += 1/4 * Number(ls.get(multiplier));
+
+  }
+  catch(err) {
+    message.channel.send(`Errors found:\n\`\`\`${err}\nAt ${err.stack}\`\`\``);
+  }
+});
+
+  /*
+  
+ 
+  localstorage of message.author.id is COIN AMOUNT in old code
+  localstorage of message.author.tag is GUILD POINTS/RANK in old code
+  localstorage of message.guild is PREFIX in old code
+
+  
 if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")) {
         message.channel.startTyping();
         setTimeout(function() {
         if (message.content == prefix + "help" || message.content == "?sifhelp") {
-            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Temporarily only works for Cannicide)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random dank meme of the week from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\n${prefix}points [{optional user ID}] - Views your guild rank and guild points, which are earned through sending messages in any guild.\n${prefix}ls [item to get] [{optional item to set}] - Gets or sets localstorage values (Can only be used by bot creators and editors.)\n${prefix}hm [start/guess/end/help] [{letter}] - Hangman! What better description can I provide? HANGMAN!\`\`\``);
+            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Admin Only)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random dank meme of the week from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\n${prefix}points [{optional user ID}] - Views your guild rank and guild points, which are earned through sending messages in any guild.\n${prefix}ls [item to get] [{optional item to set}] - Gets or sets localstorage values (Can only be used by bot creators and editors.)\n${prefix}hm [start/guess/end/help] [{letter}] - Hangman! What better description can I provide? HANGMAN!\n${prefix}dollars - Alias for coins command\n${prefix}memeburst - Sends 5 memes from reddit in a row for all of your spammy meme needs.\n${prefix}purge [number of messages] - Deletes the number of messages you specify (Admin Only)\n${prefix}invite - Generates a bot invite to invite this bot to your server.\`\`\``);
         }
-        if (message.content == prefix + "coins") {
+        if (message.content == prefix + "coins" || message.content == prefix + "dollars") {
             var cvalue = Math.round(localStorage.getItem(message.author.id));
           message.reply("you have **💵 " + cvalue + " Dollars!**");
         }
@@ -113,7 +130,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
             var mmberinquestion = message.mentions.members.first().user.id;
             message.reply(message.mentions.members.first().user.username + " has **💵 " + Math.round(localStorage.getItem(mmberinquestion)) + " Dollars!**");
         }
-        if (message.content.startsWith(prefix + "purge")) {
+        if (message.content.startsWith(prefix + "purge") && message.member.hasPermission("ADMINISTRATOR")) {
             var purgeamnt = Number(message.content.split(" ")[1]);
             var purgelimit = purgeamnt + 1;
             message.channel.fetchMessages({ limit: purgelimit }).then(messages => {
@@ -121,27 +138,65 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
             });
             message.reply("deleted " + purgeamnt + " messages, including deletion command!");
         }
-        if (message.content.startsWith(prefix + "sif:core prefix ") && message.author.tag == "Cannicide#2753") {
+        if (message.content.startsWith(prefix + "sif:core prefix ") && (message.author.tag == "Cannicide#2753" || message.member.hasPermission("ADMINISTRATOR"))) {
           localStorage.setItem(message.guild, message.content.split(" ")[2]);
           message.reply("Set the prefix for this guild (" + message.guild + ") to " + message.content.split(" ")[2]);
         }
         if (message.content == prefix + "meme") {
-          if (message.channel.nsfw && (Number(localStorage.getItem(message.author.id)) > 5 || Number(localStorage.getItem(message.author.id)) == 5)) {
+          var memecost = 10 * Number(localStorage.getItem(message.author.tag));
+          if ((Number(localStorage.getItem(message.author.id)) > memecost || Number(localStorage.getItem(message.author.id)) == memecost)) {
           var rndnumb = Math.floor(Math.random() * 51);
           var dankmemer = memelist[rndnumb].replace("&amp;", "&");
           message.channel.send(dankmemer).then(() => {
-            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - 5));
+            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - Number(memecost)));
           });
           }
-          else if (Number(localStorage.getItem(message.author.id)) < 5) {
-          message.reply("each meme costs 5 dollars... check your dollar balance with: " + prefix + "coins");
+          else if (Number(localStorage.getItem(message.author.id)) < memecost) {
+          message.reply("each meme costs " + memecost + " dollars... check your dollar balance with: " + prefix + "coins");
           }
           else {
-          message.reply("the meme command retrieves memes from Reddit, which may contain NSFW ideas (but not NSFW images)... for that reason, you can only use this command in an NSFW channel.");
+          message.reply("the meme command retrieves memes from Reddit, which may contain NSFW ideas (but not NSFW images)... for that reason, you can only use this command in an NSFW channel."); 
+          }
+        }
+        else if (message.content == prefix + "memeburst") {
+          var memecost = 10 * Number(localStorage.getItem(message.author.tag));
+          if ((Number(localStorage.getItem(message.author.id)) > memecost || Number(localStorage.getItem(message.author.id)) == memecost)) {
+          var rndnumb = Math.floor(Math.random() * 51);
+            var rndnumb2 = Math.floor(Math.random() * 51);
+            var rndnumb3 = Math.floor(Math.random() * 51);
+            var rndnumb4 = Math.floor(Math.random() * 51);
+            var rndnumb5 = Math.floor(Math.random() * 51);
+          var dankmemer = memelist[rndnumb].replace("&amp;", "&");
+            var dankmemer2 = memelist[rndnumb2].replace("&amp;", "&");
+            var dankmemer3 = memelist[rndnumb3].replace("&amp;", "&");
+            var dankmemer4 = memelist[rndnumb4].replace("&amp;", "&");
+            var dankmemer5 = memelist[rndnumb5].replace("&amp;", "&");
+          message.channel.send("From https://reddit.com/r/dankmemes - Upvote them there!");
+            message.channel.send(dankmemer).then(() => {
+            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - Number(memecost)));
+          });
+            message.channel.send(dankmemer2).then(() => {
+            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - Number(memecost)));
+          });
+            message.channel.send(dankmemer3).then(() => {
+            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - Number(memecost)));
+          });
+            message.channel.send(dankmemer4).then(() => {
+            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - Number(memecost)));
+          });
+            message.channel.send(dankmemer5).then(() => {
+            localStorage.setItem(message.author.id, (Number(localStorage.getItem(message.author.id)) - Number(memecost)));
+          });
+          }
+          else if (Number(localStorage.getItem(message.author.id)) < memecost) {
+          message.reply("each meme costs " + memecost + " dollars... check your dollar balance with: " + prefix + "coins");
+          }
+          else {
+          message.reply("the meme command retrieves memes from Reddit, which may contain NSFW ideas (but not NSFW images)... for that reason, you can only use this command in an NSFW channel."); 
           }
         }
         if (message.content == prefix + "info") {
-           message.channel.send("`Info on Project Sif`\n\nAt least one to two commands are added to this bot per week.\nProject Sif was created by Cannicide#2753.\nIt is built and run on a server, so the bot will never go offline unless the server itself does.\nTo report bugs, DM Cannicide or submit an issue on Github.\nFor a commands list, do " + prefix + "help");
+           message.channel.send("`Info on Project Sif`\n\nAt least one to two commands are added to this bot per week.\nProject Sif was created by Cannicide#2753.\nIt is built and run on a server, so the bot will never go offline unless the server itself does.\nTo report bugs, DM Cannicide or submit an issue on Github.\nFor a commands list, do " + prefix + "help"); 
         }
         if (message.content == prefix + "roulette") {
             message.channel.send("`How to Use Roulette`\n\nUsage: `" + prefix + "roulette <bet> <color>`\nExample: `" + prefix + "roulette 25 green`\nDescription: A game with a big wheel, in which a ball is rolled. The wheel contains many pockets, each one colored Green, Black, or Red. Your job is to guess the color on which the ball will stop rolling. Guessing black or red correctly gives you double what you bet, and guessing green correctly gives you 12 times what you bet. Bets use your dollar balance, which can be checked with `" + prefix + "coins`");
@@ -185,7 +240,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
           message.channel.send("`How to Use Multiplier`\n\nUsage: `" + prefix + "multiplier <add/view>`\nExample: `" + prefix + "multiplier add`\nDescription: Buy a multiplier to earn more dollars per message (add), or view your current multiplier (view). Each multiplier costs 1000 times the current multiplier level. Default multiplier level is 1. Each purchase now doubles your multiplier, for faster grinding.");
         }
         else if (message.content == prefix + "multiplier view") {
-          message.channel.send(`Current multiplier: x${localStorage.getItem(message.author.tag)}`);
+          message.channel.send(`Current multiplier: x${localStorage.getItem(message.author.tag)}`);  
         }
         else if (message.content.startsWith(prefix + "multiplier")) {
           if (localStorage.getItem(message.author.id) >= (1000 * Number(localStorage.getItem(message.author.tag)))) {
@@ -194,7 +249,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
             message.reply("Purchase successful! You now have a multiplier of x" + localStorage.getItem(message.author.tag) + " dollars!");
           }
           else {
-            message.reply("you do not have enough dollars to do that. Amount required: " + (1000 * Number(localStorage.getItem(message.author.tag))) + ".");
+            message.reply("you do not have enough dollars to do that. Amount required: " + (1000 * Number(localStorage.getItem(message.author.tag))) + "."); 
           }
         }
         if (message.content.startsWith(prefix + "points")) {
@@ -214,19 +269,19 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                     guildrank = "Trainee";
                 }
                 if (score >= 100) {
-                   guildrank = "Lame Memer";
+                   guildrank = "Lame Memer"; 
                 }
                 if (score >= 500) {
-                   guildrank = "Almighty Cheese";
+                   guildrank = "Almighty Cheese"; 
                 }
                 if (score >= 800) {
-                   guildrank = "Chicken Nugget";
+                   guildrank = "Chicken Nugget"; 
                 }
                 if (score >= 900) {
-                   guildrank = "5% Waluigi";
+                   guildrank = "5% Waluigi"; 
                 }
                 if (score >= 1000) {
-                   guildrank = "Dank Memer";
+                   guildrank = "Dank Memer"; 
                 }
                 if(score>=1100){
                    guildrank="Calcoholic I";
@@ -271,54 +326,54 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                    guildrank="Venus III";
                    }
                 if (score >= 2500) {
-                   guildrank = "Anime Addict";
+                   guildrank = "Anime Addict"; 
                 }
                 if (score >= 5000) {
-                   guildrank = "Dead Memer";
+                   guildrank = "Dead Memer"; 
                 }
                 if (score >= 7500) {
-                   guildrank = "Has No Life";
+                   guildrank = "Has No Life"; 
                 }
                 if (score >= 9000) {
-                   guildrank = "Active User";
+                   guildrank = "Active User"; 
                 }
                 if (score >= 10000) {
-                   guildrank = "Legendary Being";
+                   guildrank = "Legendary Being"; 
                 }
                 if (score >= 25000) {
-                   guildrank = "Literally Figurative";
+                   guildrank = "Literally Figurative"; 
                 }
                 if (score >= 50000) {
-                   guildrank = "Spontaneous Memer";
+                   guildrank = "Spontaneous Memer"; 
                 }
                 if (score >= 100000) {
-                   guildrank = "Time-Wasting No-Lifer";
+                   guildrank = "Time-Wasting No-Lifer"; 
                 }
                 if (score >= 500000) {
-                   guildrank = "Nugtier Thing";
+                   guildrank = "Nugtier Thing"; 
                 }
                 if (score >= 1000000) {
-                   guildrank = "God";
+                   guildrank = "God"; 
                 }
                 if (score >= 5000000) {
-                   guildrank = "Outright Spammer";
+                   guildrank = "Outright Spammer"; 
                 }
                 if (score >= 10000000) {
-                   guildrank = "Depression-Level Active Discord User";
+                   guildrank = "Depression-Level Active Discord User"; 
                 }
                 if (score >= 1000000000) {
-                   guildrank = "Does Not Compute";
+                   guildrank = "Does Not Compute"; 
                 }
                 if (score >= 5000000000) {
-                   guildrank = "Cannicidetier Thing";
+                   guildrank = "Cannicidetier Thing"; 
                 }
                 if (score >= 1000000000000) {
-                   guildrank = "Quadrillionaire";
+                   guildrank = "Quadrillionaire"; 
                 }
                 if (score >= 1000000000000000) {
-                   guildrank = "Delete Your Discord Right Now";
+                   guildrank = "Delete Your Discord Right Now"; 
                 }
-                message.channel.send(intropoint + score + " guild points. Guild rank: " + guildrank + ".");
+                message.channel.send(intropoint + score + " guild points. Guild rank: " + guildrank + ".");    
               }
             });
           if (!isitmem) {
@@ -328,6 +383,9 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
         if (message.content.startsWith(prefix + "ls") && message.author.tag == "Cannicide#2753") {
           if (message.content.split(" ").length <= 2) message.reply(localStorage.getItem(message.content.split(" ")[1]));
           else {localStorage.setItem(message.content.split(" ")[1], message.content.split(" ")[2]); message.reply("Set " + message.content.split(" ")[1] + " to " + message.content.split(" ")[2]);}
+        }
+        if (message.content == prefix + "invite") {
+            client.generateInvite(["ADMINISTRATOR"]).then(link => message.channel.send(`Generated bot invite link, click to invite to your server: ${link}`)).catch(error => message.channel.send(`Error 239: \`\`\`${error}\`\`\``));
         }
         if (message.content.startsWith(prefix + "hm help") || message.content == prefix + "hm") {
             message.channel.send("`How to Use Hangman`\n\nUsage: `" + prefix + "hm <start/guess> [{letter}]`\nExample: `" + prefix + "hm guess d`\nDescription: Starts a game of hangman (start), or guesses a letter in a started game (guess). Hangman, yay!");
@@ -360,7 +418,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 message.reply("ended game!");
             }
             else {
-                message.reply("you do not have any running games to end.");
+                message.reply("you do not have any running games to end.");  
             }
         }
         else if (message.content == prefix + "hm guess") {
@@ -368,7 +426,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 message.reply("guess a letter with `" + prefix + "hm guess [letter]`, as demonstrated in `" + prefix + "hm help`");
             }
             else {
-                message.reply("you have not started a game of hangman yet... use `" + prefix + "hm start` to start a game!");
+                message.reply("you have not started a game of hangman yet... use `" + prefix + "hm start` to start a game!");  
             }
         }
         else if (message.content.startsWith(prefix + "hm guess ")) {
@@ -401,7 +459,7 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                           if (item == word[i]) {
                               underscores[i] = item;
                           }
-                        });
+                        }); 
                     }
                 }
                 message.channel.send("**Hangman Progress**\n\n" + underscores.join(" "));
@@ -423,23 +481,20 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
                 }
             }
             else {
-                message.reply("you must start a game before guessing the word! Check out `" + prefix + "hm help`");
+                message.reply("you must start a game before guessing the word! Check out `" + prefix + "hm help`");  
             }
         }
-        if (message.content.startsWith(prefix + "senpai")) {
-          nugScript.senpai();
+          //Nugscript
+          if (message.content.startsWith(prefix + "senpai")) {
+          
+          message.channel.send({files: [{
+            attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
+            name: "senpei.PNG"
+          }]});
         }
-        if (message.content.startsWith(prefix + "chess")) {
-          var challenger = message.author.id;
-          var challenged = message.content.substring(7);
-          nugScript.chess(challenger, challenged);
-        }
-
+        
         message.channel.stopTyping();
         }, 1000);
-    }
-});
+    }*/
 
-
-
-client.login(process.env.TOKEN);
+client.login("your token here");  
