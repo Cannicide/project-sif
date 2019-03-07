@@ -48,7 +48,8 @@ function topListCoins(toplistObject, memberId, guildMembers) {
 const toplist = {
     details: {
         name: "Toplist",
-        usage: "tl [coins/points]"
+        usage: "tl [coins/points]",
+        desc: "Displays top richest people in the current guild, and your position on the leaderboards."
     },
     coins: topListCoins
 }

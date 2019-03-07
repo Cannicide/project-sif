@@ -1,11 +1,13 @@
 var names;
 var docs;
 var doctype;
+var desc;
 
 
 function initialize(type) {
     names = [];
     docs = [];
+    desc = [];
     doctype = type;
 }
 
@@ -19,11 +21,12 @@ function getCommandDocs(name) {
     }
 }
 
-function appendCommand(name, doc) {
+function appendCommand(name, doc, description) {
     var nameIndex = names.indexOf(name);
     if (!nameIndex) {
         names.push(name);
         docs.push(doc);
+        desc.push(description);
     }
     else {
         return false;
@@ -43,6 +46,7 @@ function formatCommands(prefix) {
             \`\`\`fix
                 ${prefix}${docs[index]}
             \`\`\`
+            ${desc[index]}
         `;
     });
     let docArray = [];
