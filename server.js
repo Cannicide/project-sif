@@ -102,6 +102,90 @@ client.on('message', message => {
     coins = ls.get(id + "coins");
     coins += 1/4 * Number(ls.get(multiplier));
 
+    //Member coins toplist for guild:
+    if (ls.exist(message.guild.id + "coins")) {
+      var toplist = ls.getObj(message.guild.id + "coins");
+      var isOnToplist = false;
+      toplist.forEach((mbToCoins, index) => {
+        let memberId = mbToCoins[0];
+        if (memberId == id) {
+          isOnToplist = index;
+        }
+      });
+      if (isOnToplist) {
+        toplist[isOnToplist][1] == coins;
+      }
+      else {
+        toplist.push([id, coins]);
+      }
+      ls.setObj(message.guild.id + "coins", toplist);
+    }
+    else {
+      ls.setObj(message.guild.id + "coins", [[id, coins]]);
+    }
+
+    //Setup command, and args:
+    var splitter = message.content.replace(" ", ";:splitter185151813367::");
+    var splitted = splitter.split(";:splitter185151813367::");
+    var fixRegExp = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp(fixRegExp);
+    var command = splitted[0].replace(re, "");
+    if (splitted[1]) {
+      var args = splitted[1].split(" ");
+    }
+    else {
+      var args = false; 
+    }
+
+    //Avoid DM errors:
+    if (message.guild === null) {
+      if (message.author.id != "498956329428189204") {
+        message.reply("Sorry " + message.author.username + ", DM messages are not supported by this bot.");
+      }
+      return false;
+    }
+
+    //Initialize commands module for help command, and all other command modules:
+    var commands = require("./commands");
+    commands.init(typeof commands);
+    var tl = require("./toplist");
+    commands.append(tl.details.name, tl.details.usage);
+
+    //Prefix checker:
+    if ((!splitted[0] || !splitted[0].match(prefix)) || (message.content != "?sifhelp")) {
+      return false;
+      //No prefix detected
+    }
+    else if (message.content == "?sifhelp") {
+      command = "help";
+    }
+
+    //Command code itself:
+    message.channel.startTyping();
+    setTimeout(() => {
+      
+      switch (command) {
+        case "sifhelp":
+        case "sif":
+        case "help":
+            var list = commands.list(prefix);
+            list.forEach((cmd, index) => {
+              message.channel.send(cmd);
+            });
+          break;
+        case "coins":
+            var cvalue = Math.round(ls.get(id + "coins"));
+            message.reply(`you have **💵 ${cvalue} Dollars!**`);
+          break;
+        case "toplist":
+            var tlObj = ls.getObj(message.guild.id + "coins");
+            message.channel.send(tl.coins(tlObj, id, message.guild.members));
+          break;
+      }
+
+      message.channel.stopTyping();
+    }, 1000);
+
   }
   catch(err) {
     message.channel.send(`Errors found:\n\`\`\`${err}\nAt ${err.stack}\`\`\``);
@@ -116,16 +200,9 @@ client.on('message', message => {
   localstorage of message.guild is PREFIX in old code
 
   
-if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")) {
-        message.channel.startTyping();
-        setTimeout(function() {
-        if (message.content == prefix + "help" || message.content == "?sifhelp") {
-            message.channel.send(`\`\`\` Commands\n\n${prefix}sif:core prefix [new prefix] - Changes bot prefix for your guild (Admin Only)\n${prefix}help - Help command\n?sifhelp - Alias for help command, works regardless of prefix\n${prefix}coins - Checks your dollar balance\n${prefix}meme - Random dank meme of the week from Reddit\n${prefix}info - Gives info about the bot\n${prefix}roulette [bet] [color] - Plays roulette with a bet from your dollar balance and a color of either red, green, or black\n${prefix}multiplier [add/view] - Buys or views current dollar multiplier, which multiplies your dollars-per-message per each level of multiplier.\n${prefix}points [{optional user ID}] - Views your guild rank and guild points, which are earned through sending messages in any guild.\n${prefix}ls [item to get] [{optional item to set}] - Gets or sets localstorage values (Can only be used by bot creators and editors.)\n${prefix}hm [start/guess/end/help] [{letter}] - Hangman! What better description can I provide? HANGMAN!\n${prefix}dollars - Alias for coins command\n${prefix}memeburst - Sends 5 memes from reddit in a row for all of your spammy meme needs.\n${prefix}purge [number of messages] - Deletes the number of messages you specify (Admin Only)\n${prefix}invite - Generates a bot invite to invite this bot to your server.\`\`\``);
-        }
-        if (message.content == prefix + "coins" || message.content == prefix + "dollars") {
-            var cvalue = Math.round(localStorage.getItem(message.author.id));
-          message.reply("you have **💵 " + cvalue + " Dollars!**");
-        }
+
+        
+        
         else if (message.content.startsWith(prefix + "coins")) {
             var mmberinquestion = message.mentions.members.first().user.id;
             message.reply(message.mentions.members.first().user.username + " has **💵 " + Math.round(localStorage.getItem(mmberinquestion)) + " Dollars!**");
@@ -493,8 +570,6 @@ if (message.content.startsWith(prefix) || message.content.startsWith("?sifhelp")
           }]});
         }
         
-        message.channel.stopTyping();
-        }, 1000);
-    }*/
+    */
 
 client.login("your token here");  
