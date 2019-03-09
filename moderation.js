@@ -136,7 +136,7 @@ function guildWhiteout(mode) {
 }
 
 function guildChateau(mode) {
-    //Prevent people who have recently made their account (within one week) from joining
+    //Prevent people who have recently made their account (within one month) from joining
     //(Useful for preventing raid accounts from joining)
     var enabled = false;
     if (ls.exist(guild.id + "chateau")) {
