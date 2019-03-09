@@ -392,7 +392,9 @@ client.on("guildMemberAdd", member => {
   //Whiteout:
   if (mode == "whiteout") {
     if (!whitelist || whitelist.length < 1) {
-      return false;
+      member.kick("Kicked user/bot (not on Whitelist) according to the guidelines of Whiteout.").catch(err => {
+        member.guild.systemChannel.send(`Whiteout Mode failed to kick the following unwhitelisted user: ${member.user.tag}\nPlease take immediate action.`);
+      });
     }
     else {
       var onWhitelist = false;
