@@ -107,7 +107,8 @@ client.on('message', message => {
       ls.set(id + "coins", 0);
     }
     coins = ls.get(id + "coins");
-    coins += 1/4 * Number(ls.get(multiplier));
+    coins += 1/4 * Number(multiplier);
+    ls.set(id + "coins", coins);
 
     //Member coins toplist for guild:
     if (ls.exist(message.guild.id + "coins")) {
@@ -120,7 +121,7 @@ client.on('message', message => {
         }
       });
       if (isOnToplist) {
-        toplist[isOnToplist][1] == coins;
+        toplist[isOnToplist][1] = coins;
       }
       else {
         toplist.push([id, coins]);
@@ -158,7 +159,7 @@ client.on('message', message => {
     var tl = require("./toplist");
     commands.append(tl.details.name, tl.details.usage, tl.details.desc);
     var ess = require("./essentials");
-    ess.init(commands, memelist, message, id);
+    ess.init(commands, memelist, message, id, prefix);
     var mod = require("./moderation");
     mod.init(commands, message, message.guild, id);
     var econ = require("./economy");
@@ -299,7 +300,7 @@ client.on('message', message => {
             ess.memes.burst(multiplier);
           break;
         case "multiplier":
-            if (args[0] & args[0] == "view") {
+            if (args[0] && args[0] == "view") {
               econ.multiplier.view();
             }
             else if (args[0]) {

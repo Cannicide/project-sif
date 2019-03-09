@@ -1,5 +1,5 @@
 var message, guild, id, prefix;
-
+var ls = require("./sif-casino/ls");
 
 function initialize(commands, messageVal, guildVal, idVal, fix) {
     commands.append("Multiplier", "multiplier <add/view>", "Use the multiplier command alone, without the add or view parameters, to see a detailed description.");

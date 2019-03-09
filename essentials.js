@@ -1,8 +1,10 @@
 var memelist = [];
 var message;
 var id;
+var prefix;
+var ls = require("./sif-casino/ls");
 
-function initialize(commands, meme, msg, memberID) {
+function initialize(commands, meme, msg, memberID, fix) {
     commands.append("Meme", "meme", "Sends a random meme at the cost of 10 times your current multiplier.");
     commands.append("Meme (Burst)", "memeburst", "Sends 5 random memes at the cost of 50 times your current multiplier.");
     commands.append("Guild Rank/Points", "(points | rank | guildrank) <optional other user>", "Displays your or someone else's guild points.");
@@ -11,6 +13,7 @@ function initialize(commands, meme, msg, memberID) {
     memelist = meme;
     message = msg;
     id = memberID;
+    prefix = fix;
 }
 
 function sendMeme(multiplier) {
@@ -64,7 +67,7 @@ function sendMemeBurst(multiplier) {
 
 function sendGuildRank(coins) {
     var pointid = id;
-    var intropoint = "you have ";
+    var intropoint = "You have ";
     if (message.mentions.users.first()) {
         pointid = message.mentions.users.first().id;
         intropoint = `${pointid}` + " has ";
@@ -88,7 +91,6 @@ function sendGuildRank(coins) {
     if (guildpoints[0] == pointid && ismember) {
         var score = Number(guildpoints[1]);
         var guildrank = "Newbie";
-        isitmem = true;
         if (score >= 25) {
             guildrank = "Trainee";
         }
