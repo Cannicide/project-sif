@@ -86,6 +86,10 @@ client.on('message', message => {
       }
       prefix = ls.get(message.guild.id + "prefix");
     }
+    else {
+      ls.set(message.guild.id + "prefix", "?");
+      prefix = "?";
+    }
 
     //Set message author's ID to convenient ID variable:
     var id = message.author.id;
@@ -161,7 +165,7 @@ client.on('message', message => {
     econ.init(commands, message, message.guild, id, prefix);
 
     //Prefix checker:
-    if ((!splitted[0] || !splitted[0].match(prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))) || (message.content != "?sifhelp")) {
+    if ((!splitted[0] || !splitted[0].match(prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))) && (message.content != "?sifhelp")) {
       return false;
       //No prefix detected
     }
