@@ -169,6 +169,9 @@ client.on('message', message => {
       command = "help";
     }
 
+    //Permission checker:
+    const isAdmin = message.member.hasPermission("ADMINISTRATOR");
+
     //Command code itself:
     message.channel.startTyping();
     setTimeout(() => {
@@ -217,6 +220,48 @@ client.on('message', message => {
         case "purge":
             mod.messages.purge(args);
           break;
+        case "wl":
+        case "whitelist":
+            if (!isAdmin) { message.reply("insufficient permissions"); return false; } 
+            args[0] = args[0].toLowerCase();
+            if (args[0] == "list") {
+              mod.guild.members.whitelist(2, args);
+            }
+            else if (args[0] == "add" || args[0] == "remove" || args[0] == "modify") {
+              mod.guild.members.whitelist(3, args);
+            }
+            else {
+              message.channel.send(`Usage: \`${prefix}${commands.get("Whitelist")}\``);
+            } 
+          break;
+        case "lockdown":
+            if (!isAdmin) { message.reply("insufficient permissions"); return false; }
+            if (args[0] == "status") {
+              args[0] == 2;
+            }
+            mod.guild.modes.lockdown(args[0]);
+          break;
+        case "enforce":
+            if (!isAdmin) { message.reply("insufficient permissions"); return false; }
+            if (args[0] == "status") {
+              args[0] == 2;
+            }
+            mod.guild.modes.enforce(args[0]);
+          break;
+        case "whiteout":
+            if (!isAdmin) { message.reply("insufficient permissions"); return false; }
+            if (args[0] == "status") {
+              args[0] == 2;
+            }
+            mod.guild.modes.whiteout(args[0]);
+          break;
+        case "chateau":
+            if (!isAdmin) { message.reply("insufficient permissions"); return false; }
+            if (args[0] == "status") {
+              args[0] == 2;
+            }
+            mod.guild.invites.chateau(args[0]);
+          break;
 
         //Essentials:
         case "sif:core":
@@ -264,10 +309,9 @@ client.on('message', message => {
         //Misc:
         case "senpai":
             //NugScript
-            message.channel.send({files: [{
-              attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
-              name: "senpei.PNG"
-            }]});
+            var nug = require("./nugScript");
+            nug.setMessage(message);
+            nug.senpai();
           break;
         default:
             

@@ -9,7 +9,7 @@ var nugScript = {
   setMessage: function(msg) {
     //Sets the message variable to the message object from the Discord.js library
     message = msg;
-  }
+  },
   senpai: function() {
     message.channel.send({files: [{
       attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
