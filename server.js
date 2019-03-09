@@ -242,28 +242,28 @@ client.on('message', message => {
         case "lockdown":
             if (!isAdmin) { message.reply("insufficient permissions"); return false; }
             if (args[0] == "status") {
-              args[0] == 2;
+              args[0] = 2;
             }
             mod.guild.modes.lockdown(args[0]);
           break;
         case "enforce":
             if (!isAdmin) { message.reply("insufficient permissions"); return false; }
             if (args[0] == "status") {
-              args[0] == 2;
+              args[0] = 2;
             }
             mod.guild.modes.enforce(args[0]);
           break;
         case "whiteout":
             if (!isAdmin) { message.reply("insufficient permissions"); return false; }
             if (args[0] == "status") {
-              args[0] == 2;
+              args[0] = 2;
             }
             mod.guild.modes.whiteout(args[0]);
           break;
         case "chateau":
             if (!isAdmin) { message.reply("insufficient permissions"); return false; }
             if (args[0] == "status") {
-              args[0] == 2;
+              args[0] = 2;
             }
             mod.guild.invites.chateau(args[0]);
           break;
