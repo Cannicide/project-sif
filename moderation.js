@@ -15,7 +15,7 @@ function initialize(commands, messageVal, guildVal, idVal) {
 function doPurge(args) {
     if (message.member.hasPermission("ADMINISTRATOR") || message.member.hasPermission("MANAGE_MESSAGES")) {
         var purgeamnt = args[0];
-        var purgelimit = purgeamnt + 1;
+        var purgelimit = Number(purgeamnt) + 1;
         message.channel.fetchMessages({ limit: purgelimit }).then(messages => {
           message.channel.bulkDelete(messages);
           message.reply("deleted " + messages.array().length + " messages, including deletion command!");
