@@ -284,12 +284,12 @@ client.on('message', message => {
         case "info":
             message.channel.send(`\`Info on Project Sif\`
         
-            At least one to two commands are added to this bot per week.
-            Project Sif was created by Cannicide#2753.
-            It is built and run on a server, so the bot will never go offline unless the server itself does.
-            To report bugs, DM Cannicide or submit an issue on Github.
-            For a commands list, do ${prefix}help
-            Invite: ||${invite}||`); 
+          At least one to two commands are added to this bot per week.
+          Project Sif was created by Cannicide#2753.
+          It is built and run on a server, so the bot will never go offline unless the server itself does.
+          To report bugs, DM Cannicide or submit an issue on Github.
+          For a commands list, do ${prefix}help
+          Invite: ||${invite}||`); 
           break;
 
         //Economy:
