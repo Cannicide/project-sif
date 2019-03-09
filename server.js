@@ -7,7 +7,7 @@ var app = express();
 
 app.use(express.static('public'));
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+  response.send('hello world');
 });
 const listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
@@ -386,7 +386,6 @@ client.on("guildMemberAdd", member => {
 
   //Whiteout:
   if (mode == "whiteout") {
-    var whitelist = ls.getObj(member.guild.id + "whitelist");
     if (!whitelist || whitelist.length < 1) {
       return false;
     }
