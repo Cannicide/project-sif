@@ -23,7 +23,7 @@ function getCommandDocs(name) {
 
 function appendCommand(name, doc, description) {
     var nameIndex = names.indexOf(name);
-    if (!nameIndex) {
+    if (nameIndex == -1) {
         names.push(name);
         docs.push(doc);
         desc.push(description);
@@ -36,17 +36,17 @@ function appendCommand(name, doc, description) {
 function formatCommands(prefix) {
     let documents = `
         __\`\`\`md
-            # Project Sif Commands #
+        # Project Sif Commands #
         \`\`\`__
         \n
     `;
     names.forEach((name, index) => {
         documents += `
-            \n\n**${name}**
-            \`\`\`fix
-                ${prefix}${docs[index]}
-            \`\`\`
-            ${desc[index]}
+        \n\n**${name}**
+        \`\`\`fix
+        ${prefix}${docs[index]}
+        \`\`\`
+        ${desc[index]}
         `;
     });
     let docArray = [];
