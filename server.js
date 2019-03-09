@@ -327,6 +327,89 @@ client.on('message', message => {
   }
 });
 
+client.on("guildMemberAdd", member => {
+  const mbid = member.id;
+  const isBot = member.user.bot;
+  const mode = ls.get(member.guild.id + "mode");
+  const chateau = ls.get(member.guild.id + "chateau");
+  const whitelist = ls.getObj(member.guild.id + "whitelist");
+  if (!mode && !chateau) return false;
+  
+  //Chateau Royal Invitations:
+  if (chateau == "chateau") {
+    var createdAt = member.user.createdAt;
+    var currentDate = new Date();
+    var crAtMonth = createdAt.getMonth();
+    var cdMonth = currentDate.getMonth();
+    var crAtYear = createdAt.getFullYear();
+    var cdYear = currentDate.getFullYear();
+    if (crAtMonth == cdMonth && crAtYear == cdYear) {
+      //Flagged for possibly suspicious account activity
+      member.kick("Potential suspicious activity; member's account was made within the month.").catch(err => {
+        member.guild.systemChannel.send(`Chateau Setting failed to kick the following user for potential suspicious account activity: ${member.user.tag}`);
+      });
+    }
+    else if (crAtMonth > cdMonth || crAtYear > cdYear) {
+      //Definite suspicious activity, the result of a hacked account or a Discord/code error
+      member.ban("Definite suspicious activity; member's account was made *after* current date.").catch(err => {
+        member.guild.systemChannel.send(`Chateau Setting failed to ban the following user for definite suspicious account activity: ${member.user.tag}`);
+      });
+    }
+    else {
+      //Not flagged
+    }
+  }
+
+  //Lockdown:
+  if (mode == "lockdown") {
+    if (isBot) {
+      return false;
+    }
+    else {
+      member.kick("Kicked user according to the guidelines of Lockdown.").catch(err => {
+        member.guild.systemChannel.send(`Lockdown Mode failed to kick the following user: ${member.user.tag}\nPlease take immediate action.`);
+      });
+    }
+  }
+
+  //Enforce:
+  if (mode == "enforce") {
+    if (!isBot) {
+      return false;
+    }
+    else {
+      member.kick("Kicked bot according to the guidelines of Enforce.").catch(err => {
+        member.guild.systemChannel.send(`Enforce Mode failed to kick the following bot: ${member.user.tag}\nPlease take immediate action.`);
+      });;
+    }
+  }
+
+  //Whiteout:
+  if (mode == "whiteout") {
+    var whitelist = ls.getObj(member.guild.id + "whitelist");
+    if (!whitelist || whitelist.length < 1) {
+      return false;
+    }
+    else {
+      var onWhitelist = false;
+      whitelist.forEach((id, index) => {
+        if (id == mbid) {
+          onWhitelist = true;
+        }
+      });
+      if (!onWhitelist) {
+        member.kick("Kicked user/bot (not on Whitelist) according to the guidelines of Whiteout.").catch(err => {
+          member.guild.systemChannel.send(`Whiteout Mode failed to kick the following unwhitelisted user: ${member.user.tag}\nPlease take immediate action.`);
+        });
+      }
+      else {
+        return false;
+      }
+    }
+  }
+
+});
+
   /*
   
  

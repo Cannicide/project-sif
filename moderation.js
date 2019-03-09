@@ -122,7 +122,7 @@ function guildWhiteout(mode) {
             }
         break;
         case 2:
-            if (enabled == "enforce") {
+            if (enabled == "whiteout") {
                 message.reply("Whiteout Mode is currently enabled for this guild.");
             }
             else {
@@ -136,8 +136,8 @@ function guildWhiteout(mode) {
 }
 
 function guildChateau(mode) {
-    //Prevent people on the whitelist from making invites
-    //(Useful for preventing accidentally whitelisted newbie catastrophes in Guild Whiteout Mode)
+    //Prevent people who have recently made their account (within one week) from joining
+    //(Useful for preventing raid accounts from joining)
     var enabled = false;
     if (ls.exist(guild.id + "chateau")) {
         enabled = ls.get(guild.id + "chateau");
