@@ -93,7 +93,7 @@ client.on('message', message => {
     //Member multiplier amount:
     var multiplier = 1;
     if (!(ls.get(id + "mult") > 1) || !ls.exist(id + "mult")) {
-      ls.set(id + "mult", 0);
+      ls.set(id + "mult", 1);
     }
     multiplier = ls.get(id + "mult");
 
@@ -156,9 +156,9 @@ client.on('message', message => {
     var ess = require("./essentials");
     ess.init(commands, memelist, message, id);
     var mod = require("./moderation");
-    mod.init(message, message.guild, id);
+    mod.init(commands, message, message.guild, id);
     var econ = require("./economy");
-    econ.init(message, message.guild, id);
+    econ.init(commands, message, message.guild, id, prefix);
 
     //Prefix checker:
     if ((!splitted[0] || !splitted[0].match(prefix)) || (message.content != "?sifhelp")) {
@@ -176,6 +176,7 @@ client.on('message', message => {
       switch (command) {
         case "sifhelp":
         case "sif":
+        case "commands":
         case "help":
             var list = commands.list(prefix);
             list.forEach((cmd, index) => {
@@ -211,8 +212,10 @@ client.on('message', message => {
         ////Everything after this point falls into the essentials, moderation, or economy categories:\\\\
         
         //Moderation:
+        case "clear":
+        case "delete":
         case "purge":
-            
+            mod.messages.purge(args);
           break;
 
         //Essentials:
@@ -246,13 +249,26 @@ client.on('message', message => {
         case "memeburst":
             ess.memes.burst(multiplier);
           break;
-        
-        //NugScript:
-        case "some nug command here":
-
+        case "multiplier":
+            if (args[0] & args[0] == "view") {
+              econ.multiplier.view();
+            }
+            else if (args[0]) {
+              econ.multiplier.add();
+            }
+            else {
+              econ.multiplier.help();
+            }
           break;
 
         //Misc:
+        case "senpai":
+            //NugScript
+            message.channel.send({files: [{
+              attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
+              name: "senpei.PNG"
+            }]});
+          break;
         default:
             
           break;
@@ -274,49 +290,12 @@ client.on('message', message => {
   localstorage of message.author.tag is MULTIPLIER in old code
   localstorage of message.guild is PREFIX in old code
 
-  
 
-        
-        
-        if (message.content.startsWith(prefix + "purge") && message.member.hasPermission("ADMINISTRATOR")) {
-            var purgeamnt = Number(message.content.split(" ")[1]);
-            var purgelimit = purgeamnt + 1;
-            message.channel.fetchMessages({ limit: purgelimit }).then(messages => {
-              message.channel.bulkDelete(messages);
-            });
-            message.reply("deleted " + purgeamnt + " messages, including deletion command!");
-        }
-        
-        
-        
-        if (message.content == prefix + "multiplier") {
-          message.channel.send("`How to Use Multiplier`\n\nUsage: `" + prefix + "multiplier <add/view>`\nExample: `" + prefix + "multiplier add`\nDescription: Buy a multiplier to earn more dollars per message (add), or view your current multiplier (view). Each multiplier costs 1000 times the current multiplier level. Default multiplier level is 1. Each purchase now doubles your multiplier, for faster grinding.");
-        }
-        else if (message.content == prefix + "multiplier view") {
-          message.channel.send(`Current multiplier: x${ls.get(message.author.tag)}`);  
-        }
-        else if (message.content.startsWith(prefix + "multiplier")) {
-          if (ls.get(message.author.id) >= (1000 * Number(ls.get(message.author.tag)))) {
-            ls.set(message.author.tag, (Number(ls.get(message.author.tag)) * 2));
-            ls.set(message.author.id, (Number(ls.get(message.author.id)) - (1000 * Number(ls.get(message.author.tag)))));
-            message.reply("Purchase successful! You now have a multiplier of x" + ls.get(message.author.tag) + " dollars!");
-          }
-          else {
-            message.reply("you do not have enough dollars to do that. Amount required: " + (1000 * Number(ls.get(message.author.tag))) + "."); 
-          }
-        }
-        
-        
-        
-          //Nugscript
-          if (message.content.startsWith(prefix + "senpai")) {
-          
-          message.channel.send({files: [{
-            attachment: "https://raw.githubusercontent.com/Cannicide/project-sif/master/senpei.PNG",
-            name: "senpei.PNG"
-          }]});
-        }
-        
-    */
+  ls of id + "coins" is COIN AMOUNT in new code
+  ls of id + "mult" is MULTIPLIER in new code
+  ls of message.guild.id + "prefix" is PREFIX in new code
+
+
+  */
 
 client.login("your token here");  
