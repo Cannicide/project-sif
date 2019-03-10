@@ -166,7 +166,7 @@ client.on('message', message => {
     econ.init(commands, message, message.guild, id, prefix);
 
     //Prefix checker:
-    if ((!splitted[0] || !splitted[0].match(prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))) && (message.content != "?sifhelp")) {
+    if ((!splitted[0] || !splitted[0].startsWith(prefix) || message.content.length <= 2) && (message.content != "?sifhelp")) {
       return false;
       //No prefix detected
     }

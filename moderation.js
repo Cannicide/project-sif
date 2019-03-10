@@ -231,6 +231,7 @@ function guildWhitelist(mode, args) {
                         addedCount += 1;
                     }
                 });
+                ls.setObj(guild.id + "whitelist", whitelistUsers);
                 message.reply(`added ${addedCount} users to the Whitelist, and removed ${removedCount} users from the Whitelist. (Users are removed from the whitelist if they are already on it and this command is used on them again).`);
             }
             else {
