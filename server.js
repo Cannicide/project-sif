@@ -50,9 +50,10 @@ client.on('message', message => {
     var points = 0;
     var memberindex = 0;
     var ismember = false;
-    if (ls.exist("guildpoints")) {
+    var guild = message.guild.id;
+    if (ls.exist(guild + "guildpoints")) {
       //Guild ranking system already set up
-      ls.getObj("guildpoints").forEach(function(item, index) {
+      ls.getObj(guild + "guildpoints").forEach(function(item, index) {
         if (item[0] == message.author.id) {
           ismember = true;
           memberindex = index;
@@ -60,22 +61,22 @@ client.on('message', message => {
       });
       if (ismember) {
         //Member already has a guild rank
-        var guildpoints = ls.getObj("guildpoints");
+        var guildpoints = ls.getObj(guild + "guildpoints");
         guildpoints[memberindex][1] += 1;
         points = guildpoints[memberindex][1];
-        ls.setObj("guildpoints", guildpoints);
+        ls.setObj(guild + "guildpoints", guildpoints);
       }
       else {
         //Member does not already have a guild rank
-        var guildpoints = ls.getObj("guildpoints");
+        var guildpoints = ls.getObj(guild + "guildpoints");
         guildpoints.push([message.author.id, 0]);
         points = 0;
-        ls.setObj("guildpoints", guildpoints);
+        ls.setObj(guild + "guildpoints", guildpoints);
       }
     }
     else {
       //Guild ranking system not set up
-      ls.setObj("guildpoints", []);
+      ls.setObj(guild + "guildpoints", []);
     }
 
     //Guild prefix:
@@ -159,7 +160,7 @@ client.on('message', message => {
     var tl = require("./toplist");
     commands.append(tl.details.name, tl.details.usage, tl.details.desc);
     var ess = require("./essentials");
-    ess.init(commands, memelist, message, id, prefix);
+    ess.init(commands, memelist, message, id, prefix, guild);
     var mod = require("./moderation");
     mod.init(commands, message, message.guild, id);
     var econ = require("./economy");
