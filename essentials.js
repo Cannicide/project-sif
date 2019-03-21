@@ -9,6 +9,9 @@ function initialize(commands, meme, msg, memberID, fix, guildID) {
     commands.append("Meme", "meme", "Sends a random meme at the cost of 10 times your current multiplier.");
     commands.append("Meme (Burst)", "memeburst", "Sends 5 random memes at the cost of 50 times your current multiplier.");
     commands.append("Guild Rank/Points", "(points | rank | guildrank) <optional other user>", "Displays your or someone else's guild points.");
+    commands.append("Bot Invite/Info", "(invite | info) <command>", "Gives you important bot information and an invite to add the bot to your own server!");
+    commands.append("Coins/Dollars", "(dollars | coins | balance) <optional user mention>", "Retrieves your coin balance, or the coin balance of another mentioned user.");
+    commands.append("Help and Sifhelp", "(commands | sifhelp | help | sif) <command>", "Sends a list of commands to be used with and on Project Sif.");
 
     //Initialize memelist and other resources:
     memelist = meme;

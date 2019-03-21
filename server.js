@@ -195,6 +195,8 @@ client.on('message', message => {
           break;
 
         //Constantly changing values and how to view them:
+        case "dollars":
+        case "balance":
         case "coins":
             if (!args) {
               var cvalue = Math.round(ls.get(id + "coins"));

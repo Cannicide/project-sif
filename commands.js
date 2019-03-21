@@ -56,6 +56,7 @@ function formatCommands(prefix) {
             let newDoc = documents.split("");
             if (newDoc.length <= 2000) {
                 over2000 = false;
+                docArray.push(documents);
                 break;
             }
             else {

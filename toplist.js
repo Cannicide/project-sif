@@ -37,16 +37,16 @@ function topListCoins(toplistObject, memberId, guildMembers) {
     __**Top Richest People In This Guild**__
 
     \`\`\`ini
-    [1.]        ${gm[0]}        $${tl[0][1]}
-    [2.]        ${gm[1]}        $${tl[1][1]}
-    [3.]        ${gm[2]}        $${tl[2][1]}
-    [4.]        ${gm[3]}        $${tl[3][1]}
-    [5.]        ${gm[4]}        $${tl[4][1]}
-    [6.]        ${gm[5]}        $${tl[5][1]}
-    [7.]        ${gm[6]}        $${tl[6][1]}
-    [8.]        ${gm[7]}        $${tl[7][1]}
-    [9.]        ${gm[8]}        $${tl[8][1]}
-    [10.]       ${gm[9]}        $${tl[9][1]}
+    [01.]        $${tl[0][1]}        ${gm[0]}
+    [02.]        $${tl[1][1]}        ${gm[1]}
+    [03.]        $${tl[2][1]}        ${gm[2]}
+    [04.]        $${tl[3][1]}        ${gm[3]}
+    [05.]        $${tl[4][1]}        ${gm[4]}
+    [06.]        $${tl[5][1]}        ${gm[5]}
+    [07.]        $${tl[6][1]}        ${gm[6]}
+    [08.]        $${tl[7][1]}        ${gm[7]}
+    [09.]        $${tl[8][1]}        ${gm[8]}
+    [10.]        $${tl[9][1]}        ${gm[9]}
     \`\`\`
 
         *Your position:* [${userIndex + 1}.]        ${guildMembers.find("id", tl[userIndex][0])}        $${tl[userIndex][1]}
