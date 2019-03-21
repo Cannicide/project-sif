@@ -2,9 +2,10 @@ var memelist = [];
 var message;
 var id;
 var prefix;
+var guild;
 var ls = require("./sif-casino/ls");
 
-function initialize(commands, meme, msg, memberID, fix) {
+function initialize(commands, meme, msg, memberID, fix, guildID) {
     commands.append("Meme", "meme", "Sends a random meme at the cost of 10 times your current multiplier.");
     commands.append("Meme (Burst)", "memeburst", "Sends 5 random memes at the cost of 50 times your current multiplier.");
     commands.append("Guild Rank/Points", "(points | rank | guildrank) <optional other user>", "Displays your or someone else's guild points.");
@@ -14,6 +15,7 @@ function initialize(commands, meme, msg, memberID, fix) {
     message = msg;
     id = memberID;
     prefix = fix;
+    guild = guildID;
 }
 
 function sendMeme(multiplier) {
@@ -74,9 +76,9 @@ function sendGuildRank(coins) {
     }
     var memberindex = 0;
     var ismember = false;
-    if (ls.exist("guildpoints")) {
+    if (ls.exist(guild + "guildpoints")) {
         //Guild ranking system already set up
-        ls.getObj("guildpoints").forEach(function(item, index) {
+        ls.getObj(guild + "guildpoints").forEach(function(item, index) {
             if (item[0] == pointid) {
                 ismember = true;
                 memberindex = index;
@@ -87,7 +89,7 @@ function sendGuildRank(coins) {
         message.channel.send("There are no guild points!");
     }
 
-    var guildpoints = ls.getObj("guildpoints")[memberindex];
+    var guildpoints = ls.getObj(guild + "guildpoints")[memberindex];
     if (guildpoints[0] == pointid && ismember) {
         var score = Number(guildpoints[1]);
         var guildrank = "Newbie";

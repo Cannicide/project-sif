@@ -160,7 +160,7 @@ client.on('message', message => {
     var tl = require("./toplist");
     commands.append(tl.details.name, tl.details.usage, tl.details.desc);
     var ess = require("./essentials");
-    ess.init(commands, memelist, message, id, prefix);
+    ess.init(commands, memelist, message, id, prefix, guild);
     var mod = require("./moderation");
     mod.init(commands, message, message.guild, id);
     var econ = require("./economy");
