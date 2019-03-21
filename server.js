@@ -154,17 +154,6 @@ client.on('message', message => {
       return false;
     }
 
-    //Initialize commands module for help command, and all other command modules:
-    var commands = require("./commands");
-    commands.init(typeof commands);
-    var tl = require("./toplist");
-    commands.append(tl.details.name, tl.details.usage, tl.details.desc);
-    var ess = require("./essentials");
-    ess.init(commands, memelist, message, id, prefix, guild);
-    var mod = require("./moderation");
-    mod.init(commands, message, message.guild, id);
-    var econ = require("./economy");
-    econ.init(commands, message, message.guild, id, prefix);
 
     //Prefix checker:
     if ((!splitted[0] || !splitted[0].startsWith(prefix) || message.content.length <= 2) && (message.content != "?sifhelp")) {
@@ -182,6 +171,18 @@ client.on('message', message => {
     message.channel.startTyping();
     setTimeout(() => {
       
+      //Initialize commands module for help command, and all other command modules:
+      var commands = require("./commands");
+      commands.init(typeof commands);
+      var tl = require("./toplist");
+      commands.append(tl.details.name, tl.details.usage, tl.details.desc);
+      var ess = require("./essentials");
+      ess.init(commands, memelist, message, id, prefix, guild);
+      var mod = require("./moderation");
+      mod.init(commands, message, message.guild, id);
+      var econ = require("./economy");
+      econ.init(commands, message, message.guild, id, prefix);
+
       switch (command) {
         case "sifhelp":
         case "sif":
@@ -216,7 +217,7 @@ client.on('message', message => {
         case "points":
         case "rank":
         case "guildrank":
-            ess.guildPoints.send(coins);
+            ess.guildPoints.send(coins, message.author.id);
           break;
         ////Everything after this point falls into the essentials, moderation, or economy categories:\\\\
         

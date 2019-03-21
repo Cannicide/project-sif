@@ -67,8 +67,8 @@ function sendMemeBurst(multiplier) {
           }
 }
 
-function sendGuildRank(coins) {
-    var pointid = id;
+function sendGuildRank(coins, messageID) {
+    var pointid = messageID;
     var intropoint = "You have ";
     if (message.mentions.users.first()) {
         pointid = message.mentions.users.first().id;
@@ -87,6 +87,8 @@ function sendGuildRank(coins) {
     }
     else {
         message.channel.send("There are no guild points!");
+        console.log(id);
+        return false;
     }
 
     var guildpoints = ls.getObj(guild + "guildpoints")[memberindex];
