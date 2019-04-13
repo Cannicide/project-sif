@@ -314,6 +314,10 @@ client.on('message', message => {
               econ.multiplier.help();
             }
           break;
+        case "home":
+            //Conquest of Cards
+            econ.conquest.home(message, prefix);
+          break;
 
         //Misc:
         case "senpai":
