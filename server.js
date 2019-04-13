@@ -325,6 +325,14 @@ client.on('message', message => {
         case "flasks":
             econ.conquest.flasks.view(message, prefix);
           break;
+        case "cardinfo":
+            //Conquest of Cards
+            message.channel.send("Currently a work in progress... please check back later.");
+          break;
+        case "flaskopen":
+            //Conquest of Cards
+            message.channel.send("Currently a work in progress... please check back later.");
+          break;
 
         //Misc:
         case "senpai":
