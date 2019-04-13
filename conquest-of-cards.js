@@ -34,8 +34,10 @@ function homeScreen(message, prefix) {
     var char = ls.getObj(user.id + "conq");
 
     if (char) {
-        var charCards = char.cards;
-        var charFlasks = char.flasks;
+        var cs = char.cards;
+        var fs = char.flasks;
+        var msg = `Welcome back, ${user.username}. | (${cs.length}) Flasks Pending | (${fs.length}) Cards Collected | <:gloins:566753335588159489> ${char.gloins} Gloins\nUse \`${prefix}flasks\` to open pending Flasks...\nUse \`${prefix}cards\` to view owned Conquest Cards...`;
+        message.channel.send(msg);
     }
     else {
         var seconds = 10;
@@ -49,7 +51,7 @@ function homeScreen(message, prefix) {
                     message.edit(`You opened a *Starter Flask* and got:\n\n\`Name - ${f1.name}\nType - ${f1.type}\nRating - ⭐${f1.stars}\nRarity - ${f1.rarity}/9\`\n\n** **`).then((message) => {
                         message.channel.send(`⭐${f1.stars} ${f1.name} added to your collection. An additional *Starter Flask* was added to your inventory.\nUse \`${prefix}flasks\` to view and open your Flasks.\nUse \`${prefix}cards\` to view your collected cards and their statistics, including health, rating, bio, move information, and more.`);
                     });
-                    //ls.setObj(user.id + "conq", {cards: [f1], flasks: ["Starter Flask"]});
+                    ls.setObj(user.id + "conq", {cards: [f1], flasks: ["Starter Flask"], mastery: 0, gloins: 0});
                 }
                 else {
                     seconds--;
@@ -58,6 +60,10 @@ function homeScreen(message, prefix) {
             }, 1000);
         });
     }
+}
+
+function viewCollectedCards(message, prefix) {
+    
 }
 
 
