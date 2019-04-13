@@ -318,6 +318,13 @@ client.on('message', message => {
             //Conquest of Cards
             econ.conquest.home(message, prefix);
           break;
+        case "cards":
+            //Conquest of Cards
+            econ.conquest.cards.view(message, prefix);
+          break;
+        case "flasks":
+            econ.conquest.flasks.view(message, prefix);
+          break;
 
         //Misc:
         case "senpai":
