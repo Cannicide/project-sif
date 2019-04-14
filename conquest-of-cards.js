@@ -107,12 +107,35 @@ function viewFlasks(message, prefix) {
     }
 }
 
+function cardInfo(message, prefix, args) {
+    var cardIndex = args[0];
+    var user = message.author;
+    var char = ls.getObj(user.id + "conq");
+
+    if (!char || !char.cards[cardIndex] || !cardIndex) {
+        message.channel.send(`This command requires you to have at least one Conquest Card and to specify which existent one you wish to view. New to the game? Use \`${prefix}home\` to get started.`);
+    }
+    else {
+        var card = char.cards[cardIndex];
+        var m3Name = card.m3.name;
+        var m3Dmg = card.m3.dmg;
+        var m3Uses = card.m3.uses;
+        if (!card.m3) {
+            m3Name = "None";
+            m3Dmg = "None";
+            m3Uses = "None";
+        }
+        message.channel.send(`${card.name}\n⭐${card.stars}\n\nType: ${card.type}\nBonus Opponent Type: ${card.bonus}\nHealth: ${card.health}\nBio: ${card.bio}\n\nMove 1 - ${card.m1.name}\nDamage: ${card.m1.dmg}\nUses: ${card.m1.uses}\n\nMove 2 - ${card.m2.name}\nDamage: ${card.m2.dmg}\nSpecial Effect: ${card.m2.special}\nUses: ${card.m2.uses}\n\nMove 3 - ${m3Name}\nDamage: ${m3Dmg}\nUses: ${m3Uses}`);
+    }
+}
+
 
 //Export Module
 module.exports = {
     home: homeScreen,
     cards: {
-        view: viewCollectedCards
+        view: viewCollectedCards,
+        info: cardInfo
     },
     flasks: {
         view: viewFlasks

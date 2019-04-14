@@ -52,13 +52,13 @@ function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusT
     this.health = health + this.stars * 50;
     this.m1 = {
         name: move1.name,
-        dmg: move1.damage,
+        dmg: move1.dmg,
         uses: move1.uses,
         used: 0
     };
     this.m2 = {
         name: move2.name,
-        dmg: move2.damage,
+        dmg: move2.dmg,
         uses: move2.uses,
         used: 0,
         special: move2.special,
@@ -70,7 +70,7 @@ function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusT
     else {
         this.m3 = {
             name: move3.name,
-            dmg: move3.damage,
+            dmg: move3.dmg,
             uses: move3.uses,
             used: 0
         };

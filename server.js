@@ -327,7 +327,7 @@ client.on('message', message => {
           break;
         case "cardinfo":
             //Conquest of Cards
-            message.channel.send("Currently a work in progress... please check back later.");
+            econ.conquest.cards.info(message, prefix, args);
           break;
         case "flaskopen":
             //Conquest of Cards
