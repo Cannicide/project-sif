@@ -200,6 +200,114 @@ var octareanExpansion1 = {
 
 }
 
+//Evolved Archaeus Pack:
+
+var evolvedArchaeus = {
+    Archaeus: new Conquest({
+        name: "Archaeus Tetheros",
+        rating: 350,
+        type: "Skilled",
+        desc: "Hero of the Genevan Sector, Archaeus found himself mystically summoned to the Octarean Sector by the vile sorcerer Exeon V. Trapped in a foreign galaxy, Archaeus strives to become a hero to the civilians of Octarean.",
+        health: 560,
+        move1: {
+            name: "Terran Shurikens",
+            dmg: 15,
+            uses: 100
+        },
+        move2: {
+            name: "Carcinogenic Blades",
+            dmg: 75,
+            uses: 10,
+            special: "Disease"
+        },
+        move3: {
+            name: "Terran Meme-Distraction",
+            dmg: 175,
+            uses: 1
+        },
+        bonusType: "Mystic",
+        rarity: 2
+    }),
+
+    EnhancedArchaeus: new Conquest({
+        name: "Enhanced Archaeus Tetheros",
+        rating: 400,
+        type: "Chemical",
+        desc: "Hero of the Genevan Sector, Archaeus found himself mystically summoned to the Octarean Sector by the vile sorcerer Exeon V. Trapped in a foreign galaxy, Archaeus strives to become a hero to the civilians of Octarean. In this variant version, Archaeus is captured and injected with Bioweapon X, infusing him with enhanced powers.",
+        health: 650,
+        move1: {
+            name: "Light-speed Fists",
+            dmg: 45,
+            uses: 10
+        },
+        move2: {
+            name: "Bioweapon X",
+            dmg: 450,
+            uses: 1,
+            special: "Poison"
+        },
+        move3: {
+            name: "Endurance",
+            dmg: 15,
+            uses: 1000
+        },
+        bonusType: "Mystic",
+        rarity: 3
+    }),
+
+    WizardlyArchaeus: new Conquest({
+        name: "Wizardly Archaeus Tetheros",
+        rating: 450,
+        type: "Mystic",
+        desc: "Hero of the Genevan Sector, Archaeus found himself mystically summoned to the Octarean Sector by the vile sorcerer Exeon V. Trapped in a foreign galaxy, Archaeus strives to become a hero to the civilians of Octarean. In this variant version, Archaeus defeats Exeon V and uses his powers to do good in the Octarean Sector.",
+        health: 700,
+        move1: {
+            name: "Spell of Tartarus",
+            dmg: 200,
+            uses: 1
+        },
+        move2: {
+            name: "Spell of Unlimited Disease",
+            dmg: 25,
+            uses: 40,
+            special: "Disease"
+        },
+        move3: {
+            name: "Terran Blood Cult",
+            dmg: 150,
+            uses: 1
+        },
+        bonusType: "Stellar",
+        rarity: 4
+    }),
+
+    EvolvedArchaeus: new Conquest({
+        name: "Evolved Archaeus Tetheros",
+        rating: 580,
+        type: "*Evolved Stellar",
+        desc: "Hero of the Genevan Sector, Archaeus found himself mystically summoned to the Octarean Sector by the vile sorcerer Exeon V. Trapped in a foreign galaxy, Archaeus strives to become a hero to the civilians of Octarean. In this variant version, Archaeus symbiotically bonds with the parasite Venigland, becoming the most powerful being in the galaxy.",
+        health: 950,
+        move1: {
+            name: "Absorption",
+            dmg: 500,
+            uses: 1
+        },
+        move2: {
+            name: "Symbiote Rejuvenation",
+            dmg: 0,
+            uses: 2000,
+            special: "*Evolved Regeneration"
+        },
+        move3: {
+            name: "Unstoppable",
+            dmg: 100,
+            uses: 9
+        },
+        bonusType: "Stellar",
+        rarity: 7
+    })
+}
+
 
 //Export Cards:
 
@@ -207,5 +315,6 @@ module.exports = {
     default: defaultCards,
     octExp: {
         I: octareanExpansion1
-    }
+    },
+    evolvedArchaeus: evolvedArchaeus
 }

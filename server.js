@@ -333,7 +333,10 @@ client.on('message', message => {
             //Conquest of Cards
             econ.conquest.flasks.open(message, prefix, args);
           break;
-        
+        case "shop":
+            //Conquest of Cards
+            econ.conquest.shop(message, prefix, args);
+          break;
 
         //Misc:
         case "senpai":
