@@ -5,8 +5,9 @@ var rand = require("./sif-casino/random");
 
 //Conquest of Cards Flasks for the user to get more cards:
 var flasks = {
+    names: ["Starter Flask", "Starter Archaeus"],
     starter: function() {
-        var cardIndex = rand(1, 5);
+        var cardIndex = rand.int(1, 5);
         switch (cardIndex) {
             case 1:
                 return cards.default.Venigland;
@@ -43,7 +44,7 @@ function homeScreen(message, prefix) {
         var seconds = 10;
         message.channel.send("Welcome to Conquest of Cards! This is a simple in-discord game based on various cards, each representing a specific character. Each character card has special skills, moves, and powers. Collect cards and use them in duels to earn currency, buy more cards with currency, and earn Sif Coins from victory! Let's get you started with your first cards! Flasks contain cards, either new or old, and opening Flasks will give you said cards.\n\n** **");
         var secondInterval;
-        message.channel.send(`Opening your Starter Flask in 10 seconds... <a:sifcasinocoinloader:566407216790503434>`).then((message) => {
+        message.channel.send(`Opening your *Starter Flask* in 10 seconds... <a:sifcasinocoinloader:566407216790503434>`).then((message) => {
             secondInterval = setInterval(() => {
                 if (seconds == 0) {
                     clearInterval(secondInterval);
@@ -112,7 +113,7 @@ function cardInfo(message, prefix, args) {
     var user = message.author;
     var char = ls.getObj(user.id + "conq");
 
-    if (!char || !char.cards[cardIndex] || !cardIndex) {
+    if (!char || !cardIndex || !char.cards[cardIndex]) {
         message.channel.send(`This command requires you to have at least one Conquest Card and to specify which existent one you wish to view. New to the game? Use \`${prefix}home\` to get started.`);
     }
     else {
@@ -129,6 +130,46 @@ function cardInfo(message, prefix, args) {
     }
 }
 
+function flaskOpen(message, prefix, args) {
+
+
+    //Flask Array to translate: String -> Conquest
+    var flaskEntities = [flasks.starter(), flasks.starterArchaeus()];
+
+
+    var flaskIndex = args[0];
+    var user = message.author;
+    var char = ls.getObj(user.id + "conq");
+
+    if (!char || !flaskIndex || !char.flasks[flaskIndex]) {
+        message.channel.send(`This command requires you to have at least one Flask and to specify which existent one you wish to open. New to the game? Use \`${prefix}home\` to get started.`);
+    }
+    else {
+        var flask = char.flasks[flaskIndex];
+        var seconds = 3;
+        var secondInterval;
+        message.channel.send(`Opening your *${flask}* in 3 seconds... <a:sifcasinocoinloader:566407216790503434>`).then((message) => {
+            secondInterval = setInterval(() => {
+                if (seconds == 0) {
+                    clearInterval(secondInterval);
+                    var f1 = flaskEntities[flasks.names.indexOf(flask)];
+                    message.edit(`You opened a *${flask}* and got:\n\n\`Name - ${f1.name}\nType - ${f1.type}\nRating - ⭐${f1.stars}\nRarity - ${f1.rarity}/9\`\n\n** **`).then((message) => {
+                        message.channel.send(`⭐${f1.stars} ${f1.name} added to your collection.\nUse \`${prefix}flasks\` to view and open your Flasks.\nUse \`${prefix}cards\` to view your collected cards and their statistics, including health, rating, bio, move information, and more.`);
+                    });
+                    char.cards.push(f1);
+                    char.flasks.splice(flaskIndex, 1);
+                    char.gloins += 5;
+                    ls.setObj(user.id + "conq", char);
+                }
+                else {
+                    seconds--;
+                    message.edit(`Opening your *${flask}* in ${seconds} seconds... <a:sifcasinocoinloader:566407216790503434>`);
+                }
+            }, 1000);
+        });
+    }
+}
+
 
 //Export Module
 module.exports = {
@@ -138,7 +179,8 @@ module.exports = {
         info: cardInfo
     },
     flasks: {
-        view: viewFlasks
+        view: viewFlasks,
+        open: flaskOpen
     }
 }
 
