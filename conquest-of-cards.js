@@ -87,7 +87,7 @@ function homeScreen(message, prefix) {
     if (char) {
         var cs = char.cards;
         var fs = char.flasks;
-        var msg = `Welcome back, ${user.username}. | (${cs.length}) Flasks Pending | (${fs.length}) Cards Collected | <:gloins:566753335588159489> ${char.gloins} Gloins\nUse \`${prefix}flasks\` to open pending Flasks...\nUse \`${prefix}cards\` to view owned Conquest Cards...`;
+        var msg = `Welcome back, ${user.username}. | (${fs.length}) Flasks Pending | (${cs.length}) Cards Collected | <:gloins:566753335588159489> ${char.gloins} Gloins\nUse \`${prefix}flasks\` to open pending Flasks...\nUse \`${prefix}cards\` to view owned Conquest Cards...\nUse \`${prefix}shop\` to buy new Flasks and Conquest Cards at the shop...`;
         message.channel.send(msg);
     }
     else {
