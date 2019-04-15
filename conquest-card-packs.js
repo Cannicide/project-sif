@@ -308,6 +308,32 @@ var evolvedArchaeus = {
     })
 }
 
+//Villains Packs:
+
+var octareanVillains = {
+    ExeonV: new Conquest({
+        name: "Exeon V",
+        rating: 240,
+        type: "Mystic",
+        desc: "Vile sorcerer who uses the mystic arts for evil, Exeon V mystically abducted Archaeus Tetheros into the Octarean Sector. This proved to be a mistake; Archaeus and Exeon became arch-nemeses, and an epic hero versus villain conflict ensues.",
+        health: 850,
+        move1: {
+            name: "Simple Kick",
+            dmg: 5,
+            uses: 1000
+        },
+        move2: {
+            name: "Mystical Abduction",
+            dmg: 10,
+            uses: 75,
+            special: "Bruises"
+        },
+        move3: false,
+        bonusType: "Skilled",
+        rarity: 1
+    })
+}
+
 
 //Export Cards:
 
@@ -316,5 +342,8 @@ module.exports = {
     octExp: {
         I: octareanExpansion1
     },
-    evolvedArchaeus: evolvedArchaeus
+    evolvedArchaeus: evolvedArchaeus,
+    villains: {
+        octarean: octareanVillains
+    }
 }
