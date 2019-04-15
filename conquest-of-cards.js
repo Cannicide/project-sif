@@ -130,7 +130,7 @@ function viewCollectedCards(message, prefix) {
             }
             msg += `[${index}] ⭐${card.stars} ${card.name}${addon}`;
         });
-        message.channel.send(`${user.username}'s Conquest Card Collection (${cs.length}): ${msg}.\nUse \`${prefix}cardinfo <cardIndex>\`, where <cardIndex> refers to the number beside a card in [square brackets].\nEx: \`${prefix}cardinfo 0\` could display information for [0] ⭐1 Archaeus Tetheros.`);
+        message.channel.send(`${user.username}'s Conquest Card Collection (${cs.length}): ${msg}.\n\nUse \`${prefix}cardinfo <cardIndex>\`, where <cardIndex> refers to the number beside a card in [square brackets].\nEx: \`${prefix}cardinfo 0\` could display information for [0] ⭐1 Archaeus Tetheros.`);
     }
 }
 
@@ -154,7 +154,7 @@ function viewFlasks(message, prefix) {
             }
             msg += `[${index}] ${flask}${addon}`;
         });
-        message.channel.send(`${user.username}'s Unopened Flasks (${fs.length}): ${msg}.\nUse \`${prefix}flaskopen <flaskIndex>\`, where <flaskIndex> refers to the number beside a Flask in [square brackets].\nEx: \`${prefix}flaskopen 0\` could display information for [0] Starter Flask.`);
+        message.channel.send(`${user.username}'s Unopened Flasks (${fs.length}): ${msg}.\n\nUse \`${prefix}flaskopen <flaskIndex>\`, where <flaskIndex> refers to the number beside a Flask in [square brackets].\nEx: \`${prefix}flaskopen 0\` could display information for [0] Starter Flask.`);
     }
 }
 
