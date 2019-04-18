@@ -192,19 +192,20 @@ function flaskOpen(message, prefix, args) {
     }
     else {
         var flask = char.flasks[flaskIndex];
+        var f1 = flaskEntities[flasks.names.indexOf(flask)];
+        char.flasks.splice(flaskIndex, 1);
+        char.gloins += 5;
+        ls.setObj(user.id + "conq", char);
         var seconds = 3;
         var secondInterval;
         message.channel.send(`Opening your *${flask}* in 3 seconds... <a:sifcasinocoinloader:566407216790503434>`).then((message) => {
             secondInterval = setInterval(() => {
                 if (seconds == 0) {
                     clearInterval(secondInterval);
-                    var f1 = flaskEntities[flasks.names.indexOf(flask)];
                     message.edit(`You opened a *${flask}* and got:\n\n\`Name - ${f1.name}\nType - ${f1.type}\nRating - ⭐${f1.stars}\nRarity - ${f1.rarity}/9\`\n\n** **`).then((message) => {
                         message.channel.send(`⭐${f1.stars} ${f1.name} added to your collection.\nUse \`${prefix}flasks\` to view and open your Flasks.\nUse \`${prefix}cards\` to view your collected cards and their statistics, including health, rating, bio, move information, and more.`);
                     });
                     char.cards.push(f1);
-                    char.flasks.splice(flaskIndex, 1);
-                    char.gloins += 5;
                     ls.setObj(user.id + "conq", char);
                 }
                 else {
