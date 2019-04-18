@@ -54,25 +54,21 @@ var flasks = {
             case 3:
             case 4:
                 var c1 = cards.evolvedArchaeus.Archaeus;
-                c1.level = 2;
                 return c1;
             break;
             case 5:
             case 6:
             case 7:
                 var c2 = cards.evolvedArchaeus.EnhancedArchaeus;
-                c2.level = 2;
                 return c2;
             break;
             case 8:
             case 9:
                 var c3 = cards.evolvedArchaeus.WizardlyArchaeus;
-                c3.level = 5;
                 return c3;
             break;
             case 10:
                 var c4 = cards.evolvedArchaeus.EvolvedArchaeus;
-                c4.level = 10;
                 return c4;
             break;
         }

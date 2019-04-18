@@ -2,6 +2,26 @@
 var ConquestOfCards = require("./conquest-card-obj");
 var Conquest = ConquestOfCards.Conquest;
 
+/* 
+    The card packs defined and entirely written within this file
+    are the default card packs of Conquest of Cards. Other card
+    packs, such as those created by external developers, will be
+    imported to this file. However, they will not be defined nor
+    created within this file. The default card packs will only
+    account for the 9 sector themes, each theme's heroes/villains,
+    and various single-character evolution packs.
+
+    Additional cards, including official cards that are not included
+    in the default card packs, will be imported below and stored in
+    the conquest-packs folder.
+*/
+
+//Import External Card Packs (Non-Default):
+
+// No external card packs, yet \\
+
+
+
 //Default Card Pack:
 
 var defaultCards = {
@@ -226,7 +246,8 @@ var evolvedArchaeus = {
             uses: 1
         },
         bonusType: "Mystic",
-        rarity: 2
+        rarity: 2,
+        level: 2
     }),
 
     EnhancedArchaeus: new Conquest({
@@ -252,7 +273,8 @@ var evolvedArchaeus = {
             uses: 1000
         },
         bonusType: "Mystic",
-        rarity: 3
+        rarity: 3,
+        level: 2
     }),
 
     WizardlyArchaeus: new Conquest({
@@ -278,7 +300,8 @@ var evolvedArchaeus = {
             uses: 1
         },
         bonusType: "Stellar",
-        rarity: 4
+        rarity: 4,
+        level: 2
     }),
 
     EvolvedArchaeus: new Conquest({
@@ -304,7 +327,8 @@ var evolvedArchaeus = {
             uses: 9
         },
         bonusType: "Stellar",
-        rarity: 7
+        rarity: 7,
+        level: 5
     })
 }
 
@@ -331,6 +355,81 @@ var octareanVillains = {
         move3: false,
         bonusType: "Skilled",
         rarity: 1
+    }),
+
+    Pontius: new Conquest({
+        name: "Pontius P. Pancreatos",
+        rating: 200,
+        type: "Tech",
+        desc: "As the former apprentice of Exeon V, Pontius suffered from endless pain caused by his conscience. With the power of emotion-suppressing tech, Pontius now watches and assists his master in committing mass murder in the Octarean Sector.",
+        health: 800,
+        move1: {
+            name: "Simple Punch",
+            dmg: 2,
+            uses: 1000
+        },
+        move2: {
+            name: "Lack of Conscience",
+            dmg: 30,
+            uses: 1,
+            special: "None"
+        },
+        move3: false,
+        bonusType: "Skilled",
+        rarity: 1
+    }),
+
+    Scelestus: new Conquest({
+        name: "Scelestus Domitor",
+        rating: 720,
+        type: "Genetic",
+        desc: "Scelestus Domitor is a member of the genetically advanced race known as the Deus Infinitus, a race of alien conquerors who hold god-like power. Scelestus is surrounded in an aura of death, misery, and destruction.",
+        health: 1450,
+        move1: {
+            name: "Celestial Immortuos",
+            dmg: 250,
+            uses: 10
+        },
+        move2: {
+            name: "Soul Consumption",
+            dmg: 110,
+            uses: 25,
+            special: "*Evolved Regeneration"
+        },
+        move3: {
+            name: "*Dexterity Regeneration", //Regenerates the "uses" of each move except move3
+            dmg: 0,
+            uses: 3
+        },
+        bonusType: "Skilled",
+        rarity: 7.8
+    }),
+
+    EvolvedScelestus: new Conquest({
+        name: "Evolved Scelestus Domitor",
+        rating: 720,
+        type: "*Evolved Genetic",
+        desc: "Scelestus Domitor is a member of the genetically advanced race known as the Deus Infinitus, a race of alien conquerors who hold god-like power. Scelestus is surrounded in an aura of death, misery, and destruction. In this variant, the Deus Infinitus uses genetic manipulation to evolve beyond their usual limits. Scelestus is the first to undergo this therapy, and upon success, he executes the rest of his species.",
+        health: 1450,
+        move1: {
+            name: "Celestial Immortuos",
+            dmg: 350,
+            uses: 15
+        },
+        move2: {
+            name: "Cannicidal Consumption",
+            dmg: 1100,
+            uses: 1,
+            special: "*Cannicidal Regeneration"
+        },
+        move3: {
+            name: "*Dexterity Regeneration", //Regenerates the "uses" of each move except move3
+            dmg: 0,
+            uses: 15
+        },
+        bonusType: "Skilled",
+        rarity: 7.8,
+        level: 6
     })
 }
 

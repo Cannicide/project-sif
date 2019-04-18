@@ -23,8 +23,9 @@
  * @param {Number} p0.move3.uses - Number of times this move can be used
  * @param {"Chemical" | "Mystic" | "Tech" | "Stellar" | "Skilled" | "Genetic"} p0.bonusType - Enemy type that gives this card a bonus in damage and health
  * @param {0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9} p0.rarity - Approximate rarity of card, in terms of 0-9 difficulty to collect
+ * @param {Number} p0.level - Current level of the card, for level-up/upgrading purposes... Level 1 by default.
  */
-function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusType, rarity}) {
+function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusType, rarity, level}) {
     this.name = name;
     this.rating = rating;
     this.rarity = rarity;
@@ -49,7 +50,13 @@ function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusT
     this.type = type;
     this.bonus = bonusType;
     this.bio = desc;
-    this.level = 1;
+    if (level) {
+        this.level = level;
+    }
+    else {
+        this.level = 1;
+    }
+    this.effects = false;
     this.health = health + (this.stars * 50) + (this.level * 10);
     this.m1 = {
         name: move1.name,
@@ -76,6 +83,17 @@ function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusT
             used: 0
         };
     }
+    this.levelUp = function(lvl) {
+        this.health -= this.level * 10;
+        this.m1.dmg -= this.level * 5;
+        this.m2.dmg -= this.level * 5;
+        if (m3) this.m3.dmg -= this.level * 5;
+
+        this.health += lvl * 10;
+        this.m1.dmg += lvl * 5;
+        this.m2.dmg += lvl * 5;
+        if (m3) this.m3.dmg += lvl * 5;
+    };
 }
 
 module.exports = {
