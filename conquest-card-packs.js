@@ -1,6 +1,8 @@
 //Import Conquest of Cards Card Object
 var ConquestOfCards = require("./conquest-card-obj");
 var Conquest = ConquestOfCards.Conquest;
+var Auxilium = ConquestOfCards.Auxilium;
+var Modum = ConquestOfCards.Modum;
 
 /* 
     The card packs defined and entirely written within this file
@@ -15,6 +17,8 @@ var Conquest = ConquestOfCards.Conquest;
     in the default card packs, will be imported below and stored in
     the conquest-packs folder.
 */
+
+//---------------------------------Card Packs------------------------------\\
 
 //Import External Card Packs (Non-Default):
 
@@ -433,10 +437,48 @@ var octareanVillains = {
     })
 }
 
+//----------------------Auxilium Packs----------------------\\
+
+//Default Auxilium Pack:
+
+var defaultAuxilium = {
+    healthPot: new Auxilium({
+        name: "Elixir of Life",
+        rating: 100,
+        desc: "Basic health Auxilium potion that grants additional HP.",
+        healthIncrease: 10,
+        damageDone: 0,
+        effectsCleared: false,
+        level: 1
+    }),
+
+    diseasePot: new Modum({
+        name: "Modum of Disease",
+        rating: 250,
+        desc: "Basic disease Modum Auxilium potion that inflicts disease on the enemy.",
+        healthIncrease: 0,
+        damageDone: 5,
+        effectsCleared: false,
+        level: 1,
+        specialEffect: "Disease"
+    }),
+
+    malusPot: new Auxilium({
+        name: "Malus Auxilium",
+        rating: 150,
+        desc: "Basic damaging Auxilium potion that inflicts damage on the enemy.",
+        healthIncrease: 0,
+        damageDone: 15,
+        effectsCleared: false,
+        level: 1
+    })
+}
+
 
 //Export Cards:
 
 module.exports = {
+    //Cards:
     default: defaultCards,
     octExp: {
         I: octareanExpansion1
@@ -444,5 +486,9 @@ module.exports = {
     evolvedArchaeus: evolvedArchaeus,
     villains: {
         octarean: octareanVillains
+    },
+    //Auxilium/Modum Auxilium Potions:
+    auxilium: {
+        default: defaultAuxilium
     }
 }

@@ -87,15 +87,104 @@ function Conquest({name, rating, type, desc, health, move1, move2, move3, bonusT
         this.health -= this.level * 10;
         this.m1.dmg -= this.level * 5;
         this.m2.dmg -= this.level * 5;
-        if (m3) this.m3.dmg -= this.level * 5;
+        if (this.m3) this.m3.dmg -= this.level * 5;
 
         this.health += lvl * 10;
         this.m1.dmg += lvl * 5;
         this.m2.dmg += lvl * 5;
-        if (m3) this.m3.dmg += lvl * 5;
+        if (this.m3) this.m3.dmg += lvl * 5;
     };
 }
 
+
+//Auxilium Potion Object
+
+/**
+ * 
+ * @param {Object} p0
+ * @param {String} p0.name - Name of the Auxilium Potion
+ * @param {Number} p0.rating - The Auxilium Potion's power rating, used for star ranks
+ * @param {String} p0.desc - Description of the Auxilium Potion
+ * @param {Number} p0.healthIncrease - Increase in player's health (set to 0 if no increase should occur)
+ * @param {Number} p0.damageDone - Damage done to the enemy (set to 0 if no damage should occur)
+ * @param {"Poison" | "Disease" | "Bruises" | false} p0.effectsCleared - Special effects on the player to clear (set to false if no effect-clearing should occur)
+ * @param {Number} p0.level - Starting level of the Auxilium Potion
+ * 
+ */
+function Auxilium({name, rating, desc, healthIncrease, damageDone, effectsCleared, level}) {
+    this.rating = rating;
+    if (rating >= 5000) {
+        this.stars = 6;
+    }
+    else if (rating >= 1000) {
+        this.stars = 5;
+    }
+    else if (rating >= 500) {
+        this.stars = 4;
+    }
+    else if (rating >= 400) {
+        this.stars = 3;
+    }
+    else if (rating >= 200) {
+        this.stars = 2;
+    }
+    else {
+        this.stars = 1;
+    }
+    this.name = name;
+    this.desc = desc;
+    if (level) {
+        this.level = level;
+    }
+    else {
+        this.level = 1;
+    }
+    this.hp = healthIncrease + (this.level - 1) * 5;
+    this.dmg = damageDone + (this.level - 1) * 5;
+    this.ef = effectsCleared;
+    this.special = false;
+}
+
+
+
+//Modum Auxilium Potion Object (Extends Auxilium)
+
+/**
+ * 
+ * @param {Object} p0
+ * @param {String} p0.name - Name of the Modum Auxilium Potion
+ * @param {Number} p0.rating - The Modum Auxilium Potion's power rating, used for star ranks
+ * @param {String} p0.desc - Description of the Modum Auxilium Potion
+ * @param {Number} p0.healthIncrease - Increase in player's health (set to 0 if no increase should occur)
+ * @param {Number} p0.damageDone - Damage done to the enemy (set to 0 if no damage should occur)
+ * @param {"Poison" | "Disease" | "Bruises" | false} p0.effectsCleared - Special effects on the player to clear (set to false if no effect-clearing should occur)
+ * @param {Number} p0.level - Starting level of the Modum Auxilium Potion
+ * @param {"Poison" | "Disease" | "Bruises"} p0.specialEffect - Negative effect to place on the enemy
+ * 
+ */
+function ModumAuxilium({name, rating, desc, healthIncrease, damageDone, effectsCleared, level, specialEffect}) {
+    var basicAuxilium = new Auxilium({
+        name: name,
+        rating: rating,
+        desc: desc,
+        healthIncrease: healthIncrease,
+        damageDone: damageDone,
+        effectsCleared: effectsCleared,
+        level: level
+    });
+    basicAuxilium.special = specialEffect;
+    this.name = basicAuxilium.name;
+    this.rating = basicAuxilium.rating;
+    this.desc = basicAuxilium.desc;
+    this.hp = basicAuxilium.hp;
+    this.dmg = basicAuxilium.dmg;
+    this.ef = basicAuxilium.ef;
+    this.level = basicAuxilium.level;
+    this.special = basicAuxilium.special;
+}
+
 module.exports = {
-    Conquest: Conquest
+    Conquest: Conquest,
+    Auxilium: Auxilium,
+    Modum: ModumAuxilium
 }
