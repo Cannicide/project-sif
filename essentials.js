@@ -75,7 +75,7 @@ function sendMemeBurst(multiplier) {
 function msgEmbed(userID, title, mess, title2, mess2) {
     var tuser = client.users.find("id", userID);
     return {embed: {
-        color: 3447003,
+        color: /*3447003*/tuser.toString().substring(2, 8),
         author: {
           name: tuser.username,
           icon_url: tuser.avatarURL
