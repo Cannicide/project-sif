@@ -154,6 +154,30 @@ function sendGuildRank(coins, messageID) {
         if (score >= 100) {
             guildrank = "Lame Memer";
         }
+        if (score >= 125) {
+            guildrank = "Lame Gamer";
+        }
+        if (score >= 150) {
+            guildrank = "Pancho Villa ";
+            if (score >= 450) {
+                guildrank += "V (Escape Artist)";
+            }
+            else if (score >= 400) {
+                guildrank += "IV (Magician)";
+            }
+            else if (score >= 300) {
+                guildrank += "III (Top Offender)";
+            }
+            else if (score >= 250) {
+                guildrank += "II (11th Year)";
+            }
+            else if (score >= 200) {
+                guildrank += "I (Generalissimo)";
+            }
+            else {
+                guildrank += " (Noob Edition)";
+            }
+        } 
         if (score >= 500) {
             guildrank = "Almighty Cheese";
         }
