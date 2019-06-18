@@ -62,9 +62,16 @@ client.on('message', message => {
       if (ismember) {
         //Member already has a guild rank
         var guildpoints = ls.getObj(guild + "guildpoints");
-        guildpoints[memberindex][1] += 1;
-        points = guildpoints[memberindex][1];
-        ls.setObj(guild + "guildpoints", guildpoints);
+        switch (message.content[0]) {
+          case "?":
+          case "!":
+          case "/":
+          break;
+          default:
+            guildpoints[memberindex][1] += 1;
+            points = guildpoints[memberindex][1];
+            ls.setObj(guild + "guildpoints", guildpoints);
+        }
       }
       else {
         //Member does not already have a guild rank
@@ -177,7 +184,7 @@ client.on('message', message => {
       var tl = require("./toplist");
       commands.append(tl.details.name, tl.details.usage, tl.details.desc);
       var ess = require("./essentials");
-      ess.init(commands, memelist, message, id, prefix, guild);
+      ess.init(commands, memelist, message, id, prefix, guild, client);
       var mod = require("./moderation");
       mod.init(commands, message, message.guild, id);
       var econ = require("./economy");

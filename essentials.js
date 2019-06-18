@@ -3,9 +3,10 @@ var message;
 var id;
 var prefix;
 var guild;
+var client;
 var ls = require("./sif-casino/ls");
 
-function initialize(commands, meme, msg, memberID, fix, guildID) {
+function initialize(commands, meme, msg, memberID, fix, guildID, clientX) {
     commands.append("Meme", "meme", "Sends a random meme at the cost of 10 times your current multiplier.");
     commands.append("Meme (Burst)", "memeburst", "Sends 5 random memes at the cost of 50 times your current multiplier.");
     commands.append("Guild Rank/Points", "(points | rank | guildrank) <optional other user>", "Displays your or someone else's guild points.");
@@ -19,6 +20,7 @@ function initialize(commands, meme, msg, memberID, fix, guildID) {
     id = memberID;
     prefix = fix;
     guild = guildID;
+    client = clientX;
 }
 
 function sendMeme(multiplier) {
@@ -70,12 +72,39 @@ function sendMemeBurst(multiplier) {
           }
 }
 
+function msgEmbed(userID, title, mess, title2, mess2) {
+    var tuser = client.users.find("id", userID);
+    return {embed: {
+        color: /*3447003*/tuser.toString().substring(2, 8),
+        author: {
+          name: tuser.username,
+          icon_url: tuser.avatarURL
+        },
+        /*title: "Project Sif",
+        url: "https://discord.gg/wYKRB9n",
+        description: "A javascript bot capable of magnificient feats.",*/
+        fields: [{
+            name: title,
+            value: mess
+        }, {
+            name: title2,
+            value: mess2
+        }],
+        timestamp: new Date(),
+        footer: {
+          icon_url: client.user.avatarURL,
+          text: "Project Sif"
+        }
+      }
+    };
+}
+
 function sendGuildRank(coins, messageID) {
     var pointid = messageID;
-    var intropoint = "You have ";
+    //var intropoint = "You have ";
     if (message.mentions.users.first()) {
         pointid = message.mentions.users.first().id;
-        intropoint = `${pointid}` + " has ";
+        //intropoint = `${pointid}` + " has ";
     }
     var memberindex = 0;
     var ismember = false;
@@ -125,6 +154,30 @@ function sendGuildRank(coins, messageID) {
         if (score >= 100) {
             guildrank = "Lame Memer";
         }
+        if (score >= 125) {
+            guildrank = "Lame Gamer";
+        }
+        if (score >= 150) {
+            guildrank = "Pancho Villa ";
+            if (score >= 450) {
+                guildrank += "V (Escape Artist)";
+            }
+            else if (score >= 400) {
+                guildrank += "IV (Magician)";
+            }
+            else if (score >= 300) {
+                guildrank += "III (Top Offender)";
+            }
+            else if (score >= 250) {
+                guildrank += "II (11th Year)";
+            }
+            else if (score >= 200) {
+                guildrank += "I (Generalissimo)";
+            }
+            else {
+                guildrank += " (Noob Edition)";
+            }
+        } 
         if (score >= 500) {
             guildrank = "Almighty Cheese";
         }
@@ -242,7 +295,7 @@ function sendGuildRank(coins, messageID) {
         if (score >= 1000000000000000) {
             guildrank = "Delete Your Discord Right Now";
         }
-        message.channel.send(intropoint + score + " guild points. Guild rank: " + guildrank + ".");
+        message.channel.send(msgEmbed(pointid, "Guild Points", /*intropoint + */"Points: " + score + " guild points.", "Guild Rank", "Rank: " + guildrank + "."));
     }
     else {
         message.channel.send(`<@${pointid}> has not sent any messages in a guild with me in it, and thus does not have any guild points 😦`);
@@ -258,6 +311,9 @@ const essentials = {
     },
     guildPoints: {
         send: sendGuildRank
+    },
+    messages: {
+        embed: msgEmbed
     }
 }
 
