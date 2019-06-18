@@ -183,8 +183,23 @@ function ModumAuxilium({name, rating, desc, healthIncrease, damageDone, effectsC
     this.special = basicAuxilium.special;
 }
 
+/**
+ * 
+ * @param {Object} p0
+ * @param {Array} p0.zones - Zone Sectors contained in the Area in order
+ * @param {Array} p0.auras - Auras (special effects on the player based on zone) in the Area in order of zones
+ * @param {Array} p0.aids - Auras (special effects based on zone) placed on Enemies in the Area in order of zones
+ * 
+ */
+function Area({zones, auras, aids}) {
+    this.zones = zones;
+    this.auras = auras;
+    this.aids = aids;
+}
+
 module.exports = {
     Conquest: Conquest,
     Auxilium: Auxilium,
-    Modum: ModumAuxilium
+    Modum: ModumAuxilium,
+    Area: Area
 }
