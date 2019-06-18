@@ -3,6 +3,7 @@ var ConquestOfCards = require("./conquest-card-obj");
 var Conquest = ConquestOfCards.Conquest;
 var Auxilium = ConquestOfCards.Auxilium;
 var Modum = ConquestOfCards.Modum;
+var Area = ConquestOfCards.Area;
 
 /* 
     The card packs defined and entirely written within this file
@@ -474,6 +475,36 @@ var defaultAuxilium = {
     })
 }
 
+//----------------------Game Areas----------------------\\
+
+//Sector 8:
+var OctareanSector = new Area({
+    zones: ["The Fields", "Harsh Desert", "Isles of Ignition", "Plains of Prosperity", "Exeon Fortress"],
+    auras: [false, false, "Bruises", "*Regeneration", false],
+    aids: [false, false, false, "*Regeneration", "*Regeneration"]
+});
+
+//Sector 1:
+var GenevanSector = new Area({
+    zones: ["Streets of Athens", "The Sahara", "Las Vegas", "Pacific Depths", "Interdimensional Mars Outpost (IMO)"],
+    auras: [false, "Bruises", "Poison", "*Suffocation", false],
+    aids: [false, false, "Poison", false, "*Regeneration"]
+});
+
+//Sector 2:
+var DeuteranSector = new Area({
+    zones: ["Andromeda Space Station", "Buttler Avenue", "Halls of the Hind", "Bottomful Pit", "Methane Mansion"],
+    auras: [false, false, false, false, "Disease"],
+    aids: ["*Regeneration", "*Regeneration", "*Regeneration", false, "Disease"]
+});
+
+//Sector 3:
+var TrinitianSector = new Area({
+    zones: ["Trifactium Warehouse", "Trifactium Factory", "Trifactium T.O.W.E.R."],
+    auras: ["Poison", "Disease", "*5Kill"], //*5Kill has a 50% chance to kill inflicted characters after being affected for 5 turns
+    aids: ["*Regeneration", "Disease", "*5Kill"]
+});
+
 
 //Export Cards:
 
@@ -490,5 +521,12 @@ module.exports = {
     //Auxilium/Modum Auxilium Potions:
     auxilium: {
         default: defaultAuxilium
+    },
+    //Sectors of the Universe:
+    sectors: {
+        genevan: GenevanSector,
+        deuteran: DeuteranSector,
+        trinitian: TrinitianSector,
+        octarean: OctareanSector
     }
 }
