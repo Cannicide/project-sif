@@ -37,33 +37,50 @@ function sendMeme(multiplier) {
             }
 }
 
+function check5(a1, a2, a3, a4, a5) {
+    var sArr = [a1, a2, a3, a4, a5];
+    var endArr = [a1, a2, a3, a4, a5];
+    for (var i = 0; i < 5; i++) {
+        for (var x = i + 1; i < 5; i++) {
+            if (sArr[i] == sArr[x]) {
+                var rndnumb = Math.floor(Math.random() * 101);
+                while (rndnumb == sArr[i] || rndnumb == sArr[x]) {
+                    rndnumb = Math.floor(Math.random() * 101);
+                }
+                endArr[i] = rndnumb;
+            }
+        }
+    }
+    return endArr;
+}
+
 function sendMemeBurst(multiplier) {
     var memecost = 10 * Number(multiplier);
           if ((Number(ls.get(id + "coins")) > memecost * 5 || Number(ls.get(id + "coins")) == memecost * 5)) {
-            var rndnumb = Math.floor(Math.random() * 51);
-            var rndnumb2 = Math.floor(Math.random() * 51);
-            var rndnumb3 = Math.floor(Math.random() * 51);
-            var rndnumb4 = Math.floor(Math.random() * 51);
-            var rndnumb5 = Math.floor(Math.random() * 51);
-            var dankmemer = memelist[rndnumb].replace("&amp;", "&");
-            var dankmemer2 = memelist[rndnumb2].replace("&amp;", "&");
-            var dankmemer3 = memelist[rndnumb3].replace("&amp;", "&");
-            var dankmemer4 = memelist[rndnumb4].replace("&amp;", "&");
-            var dankmemer5 = memelist[rndnumb5].replace("&amp;", "&");
-            message.channel.send("From https://reddit.com/r/dankmemes - Upvote them there!");
-            message.channel.send(dankmemer).then(() => {
+            var rndnumb = Math.floor(Math.random() * 101);
+            var rndnumb2 = Math.floor(Math.random() * 101);
+            var rndnumb3 = Math.floor(Math.random() * 101);
+            var rndnumb4 = Math.floor(Math.random() * 101);
+            var rndnumb5 = Math.floor(Math.random() * 101);
+            var rnds = check5(rndnumb, rndnumb2, rndnumb3, rndnumb4, rndnumb5);
+            var dankmemer = memelist[rnds[0]].replace("&amp;", "&");
+            var dankmemer2 = memelist[rnds[1]].replace("&amp;", "&");
+            var dankmemer3 = memelist[rnds[2]].replace("&amp;", "&");
+            var dankmemer4 = memelist[rnds[3]].replace("&amp;", "&");
+            var dankmemer5 = memelist[rnds[4]].replace("&amp;", "&");
+            message.channel.send("From https://reddit.com/r/dankmemes - Upvote them there!", {files: [{attachment:dankmemer, name:"sifmeme.jpg"}]}).then(() => {
               ls.set(id + "coins", (Number(ls.get(id + "coins")) - Number(memecost)));
             });
-            message.channel.send(dankmemer2).then(() => {
+            message.channel.send({files: [{attachment:dankmemer2, name:"sifmeme.jpg"}]}).then(() => {
               ls.set(id + "coins", (Number(ls.get(id + "coins")) - Number(memecost)));
             });
-            message.channel.send(dankmemer3).then(() => {
+            message.channel.send({files: [{attachment:dankmemer3, name:"sifmeme.jpg"}]}).then(() => {
               ls.set(id + "coins", (Number(ls.get(id + "coins")) - Number(memecost)));
             });
-            message.channel.send(dankmemer4).then(() => {
+            message.channel.send({files: [{attachment:dankmemer4, name:"sifmeme.jpg"}]}).then(() => {
               ls.set(id + "coins", (Number(ls.get(id + "coins")) - Number(memecost)));
             });
-            message.channel.send(dankmemer5).then(() => {
+            message.channel.send({files: [{attachment:dankmemer5, name:"sifmeme.jpg"}]}).then(() => {
               ls.set(id + "coins", (Number(ls.get(id + "coins")) - Number(memecost)));
             });
           }
