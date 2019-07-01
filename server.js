@@ -321,6 +321,29 @@ client.on('message', message => {
               econ.multiplier.help();
             }
           break;
+        case "home":
+            //Conquest of Cards
+            econ.conquest.home(message, prefix);
+          break;
+        case "cards":
+            //Conquest of Cards
+            econ.conquest.cards.view(message, prefix);
+          break;
+        case "flasks":
+            econ.conquest.flasks.view(message, prefix);
+          break;
+        case "cardinfo":
+            //Conquest of Cards
+            econ.conquest.cards.info(message, prefix, args);
+          break;
+        case "flaskopen":
+            //Conquest of Cards
+            econ.conquest.flasks.open(message, prefix, args);
+          break;
+        case "shop":
+            //Conquest of Cards
+            econ.conquest.shop(message, prefix, args);
+          break;
 
         //Misc:
         case "senpai":

@@ -1,5 +1,6 @@
 var message, guild, id, prefix;
 var ls = require("./sif-casino/ls");
+var conquest = require("./conquest-of-cards");
 
 function initialize(commands, messageVal, guildVal, idVal, fix) {
     commands.append("Multiplier", "multiplier <add/view>", "Use the multiplier command alone, without the add or view parameters, to see a detailed description.");
@@ -36,7 +37,8 @@ const economy = {
         add: addMultiplier,
         view: viewMultiplier,
         help: helpMultiplier
-    }
+    },
+    conquest: conquest
 }
 
 module.exports = economy;
