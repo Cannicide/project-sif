@@ -3,12 +3,12 @@ var ls = require("./sif-casino/ls");
 
 
 function initialize(commands, messageVal, guildVal, idVal) {
-    commands.append("Purge", "purge [messages]", "Purges/clears the specified number of messages if you have the perms to do so.");
-    commands.append("Whitelist", "whitelist [list/modify/add/remove]", "A whitelist of users to be used in Whiteout Mode.");
-    commands.append("Lockdown", "lockdown [enable/disable/status]", "Enables Lockdown (Mode 1/3), which prevents any and all users from joining your server, but this does not apply to bots.");
-    commands.append("Enforce", "enforce [enable/disable/status]", " Enables Enforce (Mode 2/3), which prevents any and all bots from joining your server, but this does not apply to users.");
-    commands.append("Whiteout", "whiteout [enable/disable/status]", "The trending mode in raid prevention and server security, enables Whiteout (Mode 3/3), which prevents everything (bots and users) from joining your server unless explicitly added to your guild's whitelist.");
-    commands.append("Chateau Invitations", "chateau [enable/disable/status]", "A separate mode that kicks accounts suspected of being alts or performing other suspicious behaviors.");
+    commands.append("Purge", "purge [messages]", "Purges/clears the specified number of messages if you have the perms to do so.", "Moderation");
+    commands.append("Whitelist", "whitelist [list/modify/add/remove]", "A whitelist of users to be used in Whiteout Mode.", "Moderation");
+    commands.append("Lockdown", "lockdown [enable/disable/status]", "Enables Lockdown (Mode 1/3), which prevents any and all users from joining your server, but this does not apply to bots.", "Moderation");
+    commands.append("Enforce", "enforce [enable/disable/status]", " Enables Enforce (Mode 2/3), which prevents any and all bots from joining your server, but this does not apply to users.", "Moderation");
+    commands.append("Whiteout", "whiteout [enable/disable/status]", "The trending mode in raid prevention and server security, enables Whiteout (Mode 3/3), which prevents everything (bots and users) from joining your server unless explicitly added to your guild's whitelist.", "Moderation");
+    commands.append("Chateau Invitations", "chateau [enable/disable/status]", "A separate mode that kicks accounts suspected of being alts or performing other suspicious behaviors.", "Moderation");
 
     //Initialize message, guild, and author ID
     message = messageVal;

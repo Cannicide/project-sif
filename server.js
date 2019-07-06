@@ -195,7 +195,6 @@ client.on('message', message => {
       var commands = require("./commands");
       commands.init(typeof commands);
       var tl = require("./toplist");
-      commands.append(tl.details.name, tl.details.usage, tl.details.desc);
       var ess = require("./essentials");
       ess.init(commands, memelist, message, id, prefix, guild, client);
       var mod = require("./moderation");
@@ -206,7 +205,6 @@ client.on('message', message => {
       switch (command) {
         case "sifhelp":
         case "sif":
-        case "commands":
         case "help":
             var list = commands.list(prefix);
             message.react("597093036786188300");
@@ -214,6 +212,12 @@ client.on('message', message => {
             list.forEach((cmd, index) => {
               message.author.send(cmd);
             });
+          break;
+        case "list":
+        case "commands":
+            message.react("597093036786188300");
+            message.channel.send(`${message.author.username}, I sent a list of commands to your DMs.`);
+            commands.bases(message);
           break;
 
         //Constantly changing values and how to view them:

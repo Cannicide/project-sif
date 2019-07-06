@@ -3,7 +3,8 @@ var ls = require("./sif-casino/ls");
 var conquest = require("./conquest-of-cards");
 
 function initialize(commands, messageVal, guildVal, idVal, fix) {
-    commands.append("Multiplier", "multiplier <add/view>", "Use the multiplier command alone, without the add or view parameters, to see a detailed description.");
+    commands.append("Multiplier", "multiplier <add/view>", "Use the multiplier command alone, without the add or view parameters, to see a detailed description.", "Economy");
+    commands.append("Toplist", "tl [coins/points]", "Displays top richest people in the current guild, and your position on the leaderboards.", "Economy");
 
     //Initialize message, guild, and author ID
     message = messageVal;

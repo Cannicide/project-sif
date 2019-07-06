@@ -2,13 +2,15 @@ var names;
 var docs;
 var doctype;
 var desc;
+var cmdtype;
 
 
 function initialize(type) {
     names = [];
     docs = [];
     desc = [];
-    doctype = type;
+    doctype = [];
+    cmdtype = type;
 }
 
 function getCommandDocs(name) {
@@ -21,12 +23,59 @@ function getCommandDocs(name) {
     }
 }
 
-function appendCommand(name, doc, description) {
+function getCommandBases(msg) {
+    var ess = require("./essentials");
+    var tuser = msg.author.id;
+    var essCmd = [];
+    var modCmd = [];
+    var ecoCmd = [];
+    docs.forEach((doc, index) => {
+        var type = doctype[index];
+        if (doc.match(/\)/)) {
+            var dcc = doc.split(")")[0].replace("(", "");
+            dcc.split(" | ").forEach((base, index) => {
+                if (type == "Essentials") {
+                    essCmd.push(base);
+                }
+                else if (type == "Moderation") {
+                    modCmd.push(base);
+                }
+                else if (type == "Economy") {
+                    ecoCmd.push(base);
+                }
+            });
+        }
+        else {
+            var base;
+            if (doc.match(" ")) {
+                base = doc.split(" ")[0];
+            }
+            else {
+                base = doc;
+            }
+
+            if (type == "Essentials") {
+                essCmd.push(base);
+            }
+            else if (type == "Moderation") {
+                modCmd.push(base);
+            }
+            else if (type == "Economy") {
+                ecoCmd.push(base);
+            }
+        }
+    });
+
+    msg.author.send(ess.messages.tripleEmbed(tuser, "Essentials", essCmd.join(", "), "Moderation", modCmd.join(", "), "Economy", ecoCmd.join(", ")));
+}
+
+function appendCommand(name, doc, description, dt) {
     var nameIndex = names.indexOf(name);
     if (nameIndex == -1) {
         names.push(name);
         docs.push(doc);
         desc.push(description);
+        doctype.push(dt);
     }
     else {
         return false;
@@ -76,8 +125,9 @@ const commands = {
     list: formatCommands,
     get: getCommandDocs,
     append: appendCommand,
-    doctype: doctype,
-    init: initialize
+    doctype: cmdtype,
+    init: initialize,
+    bases: getCommandBases
 }
 
 module.exports = commands;

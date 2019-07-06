@@ -7,13 +7,14 @@ var client;
 var ls = require("./sif-casino/ls");
 
 function initialize(commands, meme, msg, memberID, fix, guildID, clientX) {
-    commands.append("Meme", "meme", "Sends a random meme at the cost of 10 times your current multiplier.");
-    commands.append("Meme (Burst)", "memeburst", "Sends 5 random memes at the cost of 50 times your current multiplier.");
-    commands.append("Guild Rank/Points", "(points | rank | guildrank) <optional other user>", "Displays your or someone else's guild points.");
-    commands.append("Bot Invite/Info", "(invite | info) <command>", "Gives you important bot information and an invite to add the bot to your own server!");
-    commands.append("Coins/Dollars", "(dollars | coins | balance) <optional user mention>", "Retrieves your coin balance, or the coin balance of another mentioned user.");
-    commands.append("Help and Sifhelp", "(commands | sifhelp | help | sif) <command>", "Sends a list of commands to be used with and on Project Sif.");
-    commands.append("Emote Info", "(emoji | emote | emojiInfo | emoteInfo) [emote name]", "Gets details about any emotes in a guild, such as emotes' IDs.");
+    commands.append("Meme", "meme", "Sends a random meme at the cost of 10 times your current multiplier.", "Essentials");
+    commands.append("Meme (Burst)", "memeburst", "Sends 5 random memes at the cost of 50 times your current multiplier.", "Essentials");
+    commands.append("Guild Rank/Points", "(points | rank | guildrank) <optional other user>", "Displays your or someone else's guild points.", "Essentials");
+    commands.append("Bot Invite/Info", "(invite | info) <command>", "Gives you important bot information and an invite to add the bot to your own server!", "Essentials");
+    commands.append("Coins/Dollars", "(dollars | coins | balance) <optional user mention>", "Retrieves your coin balance, or the coin balance of another mentioned user.", "Essentials");
+    commands.append("Help and Sifhelp", "(sifhelp | help | sif) <command>", "Sends a detailed list of commands to be used with and on Project Sif.", "Essentials");
+    commands.append("Emote Info", "(emoji | emote | emojiInfo | emoteInfo) [emote name]", "Gets details about any emotes in a guild, such as emotes' IDs.", "Essentials");
+    commands.append("Command List", "(commands | list)", "Sends a list of commands organized by category.", "Essentials");
 
     //Initialize memelist and other resources:
     memelist = meme;
@@ -107,6 +108,36 @@ function msgEmbed(userID, title, mess, title2, mess2) {
         }, {
             name: title2,
             value: mess2
+        }],
+        timestamp: new Date(),
+        footer: {
+          icon_url: client.user.avatarURL,
+          text: "Project Sif"
+        }
+      }
+    };
+}
+
+function tMsgEmbed(userID, title, mess, title2, mess2, title3, mess3) {
+    var tuser = client.users.find("id", userID);
+    return {embed: {
+        color: /*3447003*/tuser.toString().substring(2, 8),
+        author: {
+          name: tuser.username,
+          icon_url: tuser.avatarURL
+        },
+        /*title: "Project Sif",
+        url: "https://discord.gg/wYKRB9n",
+        description: "A javascript bot capable of magnificient feats.",*/
+        fields: [{
+            name: title,
+            value: mess
+        }, {
+            name: title2,
+            value: mess2
+        }, {
+            name: title3,
+            value: mess3
         }],
         timestamp: new Date(),
         footer: {
@@ -350,7 +381,8 @@ const essentials = {
     },
     messages: {
         embed: msgEmbed,
-        emoteInfo: getEmojiID
+        emoteInfo: getEmojiID,
+        tripleEmbed: tMsgEmbed
     }
 }
 
