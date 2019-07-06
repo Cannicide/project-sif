@@ -13,6 +13,7 @@ function initialize(commands, meme, msg, memberID, fix, guildID, clientX) {
     commands.append("Bot Invite/Info", "(invite | info) <command>", "Gives you important bot information and an invite to add the bot to your own server!");
     commands.append("Coins/Dollars", "(dollars | coins | balance) <optional user mention>", "Retrieves your coin balance, or the coin balance of another mentioned user.");
     commands.append("Help and Sifhelp", "(commands | sifhelp | help | sif) <command>", "Sends a list of commands to be used with and on Project Sif.");
+    commands.append("Emote Info", "(emoji | emote | emojiInfo | emoteInfo) [emote name]", "Gets details about any emotes in a guild, such as emotes' IDs.");
 
     //Initialize memelist and other resources:
     memelist = meme;
@@ -114,6 +115,24 @@ function msgEmbed(userID, title, mess, title2, mess2) {
         }
       }
     };
+}
+
+function getEmojiID(args) {
+    if (!args || args.length != 1) {
+        message.channel.send("Please specify the name of a valid emoji in this guild to use this command.");
+        return false;
+    }
+    var emoteName = args[0];
+    var emoteId;
+    var emote = message.guild.emojis.find(emoji => emoji.name == emoteName);
+    if (emote) {
+        emoteId = emote.id;
+        message.react(emoteId);
+        message.channel.send(msgEmbed(message.author.id, "Emote Name", emoteName, "Emote ID", emoteId));
+    }
+    else {
+        message.channel.send("Sorry, I was unable to find an emote in this guild with that name.");
+    }
 }
 
 function sendGuildRank(coins, messageID) {
@@ -330,7 +349,8 @@ const essentials = {
         send: sendGuildRank
     },
     messages: {
-        embed: msgEmbed
+        embed: msgEmbed,
+        emoteInfo: getEmojiID
     }
 }
 

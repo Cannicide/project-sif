@@ -46,11 +46,24 @@ client.on('ready', () => {
 client.on('message', message => {
   try {
     
+    //To prevent DM errors
+    if (message.author.bot) return false;
+    if (!message.guild && message.content == "Why") {
+      message.reply("Shut up.");
+      return false;
+    }
+    else if (!message.guild) {
+      message.reply("Sorry, I do not support DM messaging.");
+      return false;
+    }
+
     //Guild ranking points:
     var points = 0;
     var memberindex = 0;
     var ismember = false;
-    var guild = message.guild.id;
+    var guild;
+    if (message.guild) guild = message.guild.id;
+    else guild = "0xnotaguild";
     if (ls.exist(guild + "guildpoints")) {
       //Guild ranking system already set up
       ls.getObj(guild + "guildpoints").forEach(function(item, index) {
@@ -196,8 +209,10 @@ client.on('message', message => {
         case "commands":
         case "help":
             var list = commands.list(prefix);
+            message.react("597093036786188300");
+            message.channel.send(`${message.author.username}, I sent a list of commands and how to use them to your DMs.`);
             list.forEach((cmd, index) => {
-              message.channel.send(cmd);
+              message.author.send(cmd);
             });
           break;
 
@@ -301,6 +316,12 @@ client.on('message', message => {
           To report bugs, DM Cannicide or submit an issue on Github.
           For a commands list, do ${prefix}help
           Invite: ||${invite}||`); 
+          break;
+        case "emoji":
+        case "emote":
+        case "emojiInfo":
+        case "emoteInfo":
+            ess.messages.emoteInfo(args);
           break;
 
         //Economy:
